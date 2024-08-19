@@ -35,4 +35,6 @@ SNSで宣伝や知り合いを通じで拡散してもらおうと思います�
 データベース: PostgreSQL
 ホスティング: AWS
 
-
+ER図
+URL
+Draw.io : https://app.diagrams.net/#G13q-Blh_2XB1jbHsqZ4ag3-7-tloLcO--#%7B%22pageId%22%3A%227Nq60XOlMXgwLNgWiIWt%22%7D

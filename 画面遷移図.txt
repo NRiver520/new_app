@@ -96,4 +96,4 @@ Figma：https://www.figma.com/board/AvkVy0Jvh9tqnrRvkdqCTw/%E7%84%A1%E9%A1%8C?t=
 
   - [x]ヘルプとFAQページ
     - [x]ヘルプページ
-    - [ ]FAQページ
+    - [x]FAQページ
