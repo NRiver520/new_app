@@ -1,0 +1,17 @@
+<header class="bg-light border-bottom">
+  <div class="container d-flex justify-content-between align-items-center py-2">
+    <div class="logo">
+      <%= link_to root_path do %>
+        <%= image_tag 'logo.png' , class: 'img-fiuld' , style: 'height: 40px;' %>
+      <% end %>
+    </div>
+    <nav class="nav">
+      <%= link_to 'ピックアップ' , '/' , class: 'nav-link' %>
+      <%= link_to '人気' , '/' , class: 'nav-link' %>
+      <%= link_to '新着' , '/' , class: 'nav-link' %>
+    </nav>
+    <div>
+      <%= link_to 'ログイン' , '/' , class: 'btn btn-primary' %>
+    </div>
+  </div>
+</header>
