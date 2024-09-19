@@ -17,6 +17,12 @@
   </head>
 
   <body>
+    <header>
+      <%= render 'shared/before_login_header' %>
+    </header>
     <%= yield %>
+    <footer>
+      <%= render 'shared/footer' %>
+    </footer>
   </body>
 </html>
