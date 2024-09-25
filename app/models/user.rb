@@ -6,4 +6,11 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :username, presence: true, length: { maximum: 255 }
   validates :email, presence: true, uniqueness: true
+
+  before_create :generate_confirmation_token
+
+  def generate_confirmation_token
+    self.confirmation_token = SecureRandom.urlsafe_base64.to_s
+    self.confirmation_sent_at = Time.now.utc
+  end
 end
