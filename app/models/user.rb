@@ -13,4 +13,8 @@ class User < ApplicationRecord
     self.confirmation_token = SecureRandom.urlsafe_base64.to_s
     self.confirmation_sent_at = Time.now.utc
   end
+
+  def confirmed?
+    confirmed_at.present?
+  end
 end
