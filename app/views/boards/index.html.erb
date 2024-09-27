@@ -1,0 +1,29 @@
+<div class="container pt-3">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <form>
+        <div class="input-group mb-3">
+          <input class="form-control" placeholder="検索ワード" type="search" />
+          <div class="input-group-append">
+            <input type="submit" value="検索" class="btn btn-primary"/>
+          </div>
+          <div class="input-group-append ms-2">
+            <%= link_to '新規作成' , new_board_path, class: 'btn btn-secondary' %>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <% if @boards.any? %>
+          <%= render @boards %>
+        <% else %>
+          <div class="mb-3">掲示板がありません</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
