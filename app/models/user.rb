@@ -9,6 +9,8 @@ class User < ApplicationRecord
 
   before_create :generate_confirmation_token
 
+  has_many :boards, dependent: :destroy
+
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64.to_s
     self.confirmation_sent_at = Time.now.utc
