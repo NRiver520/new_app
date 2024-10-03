@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex">
+      <% if current_user && current_user.own?(comment) %>
+        <div class='ms-auto'>
+          <%= link_to board_comment_path(comment.board, comment), id: "button-delete-#{comment.id}", data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } do %>
+            <i class="bi bi-trash-fill"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <ul class="list-inline">
+      <li>
+        <img src="<%= comment.user.profile_image || asset_path('default.png') %>" alt="user-icon" class="rounded-circle" width="30" height="30"><%= comment.user.username %>
+      </li>
+      <li>
+        <%= l comment.created_at, format: :strftime %>
+        <%= [index]  %>
+      </li>
+    </ul>
+    <p class="card-text"><%= simple_format(comment.body) %></p>
+  </div>
+</div>

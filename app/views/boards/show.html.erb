@@ -1,25 +1,51 @@
-<div class="container">
+<div class="container" style="padding-bottom: 210px;">
   <div class="col-sm-12 col-12 mb-3 mt-3">
     <div class="card">
       <div class="card-body">
         <div class="d-flex">
           <h4 class="card-title"><%= @title %></h4>
-          <div class='ms-auto'>
-            <%= link_to '#', id: 'button-edit-#{board.id}' do %>
-              <i class="bi bi-pencil-fill"></i>
-            <% end %>
-            <%= link_to '#', id: 'button-delete-#{board.id}', method: :delete, data: {confirm: '本当に削除しますか？'} do %>
-              <i class="bi bi-trash-fill"></i>
-            <% end %>
-          </div>
+          <% if current_user && current_user.own?(@board) %>
+            <div class='ms-auto'>
+              <%= link_to edit_board_path(@board), id: "button-edit-#{@board.id}" do %>
+                <i class="bi bi-pencil-fill"></i>
+              <% end %>
+              <%= link_to board_path(@board), id: "button-delete-#{@board.id}", data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } do %>
+                <i class="bi bi-trash-fill"></i>
+              <% end %>
+            </div>
+          <% end %>
         </div>
         <ul class="list-inline">
-          <li><i class="bi bi-person"></i>
+          <li>
             <img src="<%= @board.user.profile_image || asset_path('default.png') %>" alt="user-icon" class="rounded-circle" width="30" height="30"><%= @board.user.username %>
           </li>
-          <li><i class="bi bi-calendar"></i><%= l @board.created_at, format: :strftime %></li>
+          <%= l @board.created_at, format: :strftime %></li>
         </ul>
-        <p class="card-text"><%= @board.body %></p>
+        <p class="card-text"><%= simple_format(@board.body) %></p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="col-sm-12 col-12">
+    <h5>返信</h5>
+    <% total_comments = @comments.size %>
+    <% @comments.each_with_index do |comment, index| %>
+      <%= render partial: 'comments/comment', locals: {comment: comment, index: total_comments - index } %>
+    <% end %>
+  </div>
+
+  <div class="fixed-bottom bg-white border-top p-3" style="bottom: 50px">
+    <div class="container">
+      <div class="row">
+        <div class="col-10">
+          <%= form_with model: @comment, url: board_comments_path(@board) do |f| %>
+            <%= f.label :返信 %>
+            <%= f.text_area :body, placeholder: "返信を入力...", class: "form-control" %>
+            <%= f.submit "返信", class: "btn btn-primary" %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
