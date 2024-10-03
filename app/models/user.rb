@@ -10,6 +10,11 @@ class User < ApplicationRecord
   before_create :generate_confirmation_token
 
   has_many :boards, dependent: :destroy
+  has_many :comments, dependent: :destroy
+
+  def own?(object)
+    object&.user_id == id
+  end
 
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64.to_s
@@ -19,4 +24,5 @@ class User < ApplicationRecord
   def confirmed?
     confirmed_at.present?
   end
+
 end
