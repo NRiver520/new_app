@@ -11,9 +11,10 @@
       <%= link_to '新着(未実装)' , '#' , class: 'nav-link' %>
     </nav>
     <div class="dropdown">
-      <%= link_to image_tag('default.png', alt: 'Default Avatar', class: 'rounded-circle', width: '40', height: '40'), '#', class: 'd-flex align-items-center text-decoration-none dropdown-toggle', id: 'dropdownUser', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false'} %>
+      <%= link_to'<i class="bi bi-person" style="font-size: 40px;"></i>'.html_safe, '#', class: 'd-flex align-items-center text-decoration-none dropdown-toggle', id: 'dropdownUser', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false'} %>
 
       <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser">
+        <li><img src="<%= current_user.profile_image || asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(current_user.rank) %>" width="40" height="40"><%= current_user.username %></li>
         <li><%= link_to 'ユーザー情報', '#', class: 'dropdownitem' %></li>
         <li><%= link_to '参加中の掲示板', '#', class: 'dropdownitem' %></li>
         <li><%= link_to 'DM', '#', class: 'dropdownitem' %></li>
