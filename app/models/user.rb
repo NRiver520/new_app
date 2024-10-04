@@ -25,4 +25,19 @@ class User < ApplicationRecord
     confirmed_at.present?
   end
 
+  def rank
+    case comments_count
+    when 0
+      'ノーランク'
+    when 0..50
+      'ブロンズ'
+    when 51..200
+      'シルバー'
+    when 201..500
+      'ゴールド'
+    else
+      'プラチナ'
+    end
+  end
+
 end
