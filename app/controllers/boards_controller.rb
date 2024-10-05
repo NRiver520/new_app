@@ -3,7 +3,8 @@ class BoardsController < ApplicationController
   before_action :set_board, only: %i[edit update destroy]
 
   def index
-    @boards = Board.includes(:user).order(created_at: :desc)
+    @q = Board.ransack(params[:q])
+    @boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page])
   end
 
   def new
@@ -25,7 +26,7 @@ class BoardsController < ApplicationController
     @board = Board.find(params[:id])
     @title = @board.title
     @comment = Comment.new
-    @comments = @board.comments.includes(:user).order(created_at: :desc)
+    @comments = @board.comments.includes(:user).order(created_at: :desc).page(params[:page])
   end
 
   def edit

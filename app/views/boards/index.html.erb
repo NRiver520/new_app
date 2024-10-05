@@ -3,10 +3,7 @@
     <div class="col-lg-10 offset-lg-1">
       <form>
         <div class="input-group mb-3">
-          <input class="form-control" placeholder="検索ワード" type="search" />
-          <div class="input-group-append">
-            <input type="submit" value="検索" class="btn btn-primary"/>
-          </div>
+          <%= render 'search_form', url: boards_path, q: @q %>
           <div class="input-group-append ms-2">
             <%= link_to '新規作成' , new_board_path, class: 'btn btn-secondary' %>
           </div>
@@ -24,6 +21,7 @@
           <div class="mb-3">掲示板がありません</div>
         <% end %>
       </div>
+      <%= paginate @boards, theme: 'bootstrap-5' %>
     </div>
   </div>
 </div>
