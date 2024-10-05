@@ -35,6 +35,7 @@
       <%= render partial: 'comments/comment', locals: {comment: comment, index: total_comments - index } %>
     <% end %>
   </div>
+  <%= paginate @comments, theme: 'bootstrap-5' %>
 
   <div class="fixed-bottom bg-white border-top p-3" style="bottom: 50px">
     <div class="container">
