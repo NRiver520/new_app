@@ -65,3 +65,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'kaminari', '1.2.2'
+gem 'bootstrap5-kaminari-views'
+gem 'ransack'
