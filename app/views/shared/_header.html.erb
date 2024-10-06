@@ -15,10 +15,10 @@
 
       <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser">
         <li><img src="<%= current_user.profile_image || asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(current_user.rank) %>" width="40" height="40"><%= current_user.username %></li>
-        <li><%= link_to 'ユーザー情報', '#', class: 'dropdownitem' %></li>
-        <li><%= link_to '参加中の掲示板', '#', class: 'dropdownitem' %></li>
-        <li><%= link_to 'DM', '#', class: 'dropdownitem' %></li>
-        <li><%= link_to 'この掲示板について', '#', class: 'dropdownitem' %></li>
+        <li><%= link_to 'ユーザー情報(開設予定)', '#', class: 'dropdownitem' %></li>
+        <li><%= link_to '参加中の掲示板(開設予定)', '#', class: 'dropdownitem' %></li>
+        <li><%= link_to 'DM(開設予定)', '#', class: 'dropdownitem' %></li>
+        <li><%= link_to 'この掲示板について(開設予定)', '#', class: 'dropdownitem' %></li>
         <li><hr class="dropdown-diviver"></li>
         <li><%= link_to 'ログアウト', logout_path, class: 'dropdown-item text-danger', data: { turbo_method: :delete } %></li>
       </ul>
