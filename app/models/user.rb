@@ -27,7 +27,7 @@ class User < ApplicationRecord
 
   def rank
     case comments_count
-    when 0
+    when nil
       'ノーランク'
     when 1..50
       'ブロンズ'
