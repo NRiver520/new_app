@@ -4,7 +4,7 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password,confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
-  validates :username, presence: true, length: { maximum: 255 }
+  validates :username, presence: true, length: { maximum: 255 }, uniqueness: true
   validates :email, presence: true, uniqueness: true
 
   before_create :generate_confirmation_token
@@ -29,7 +29,7 @@ class User < ApplicationRecord
     case comments_count
     when 0
       'ノーランク'
-    when 0..50
+    when 1..50
       'ブロンズ'
     when 51..200
       'シルバー'
