@@ -14,10 +14,10 @@ class BoardsController < ApplicationController
   def create
     @board = current_user.boards.build(board_params)
     if @board.save
-      flash[:success] = '掲示板を作成しました'
+      flash[:success] = "掲示板を作成しました"
       redirect_to boards_path
     else
-      flash[:danger] = '掲示板の作成に失敗しました'
+      flash[:danger] = "掲示板の作成に失敗しました"
       render :new, status: :unprocessable_entity
     end
   end
@@ -34,26 +34,26 @@ class BoardsController < ApplicationController
 
   def update
     if @board.update(board_params)
-      flash[:success] = '編集しました'
+      flash[:success] = "編集しました"
       redirect_to @board
     else
-      flash[:danger] = '編集に失敗しました'
+      flash[:danger] = "編集に失敗しました"
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @board.destroy!
-    flash[:success] = '削除しました'
+    flash[:success] = "削除しました"
     redirect_to boards_path status: :see_other
   end
 
-  private 
+  private
 
   def set_board
     @board = current_user.boards.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    flash[:danger] = '権限がありません'
+    flash[:danger] = "権限がありません"
     redirect_to boards_path
   end
 
