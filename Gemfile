@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '3.2.3'
+ruby "3.2.3"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
@@ -21,7 +21,7 @@ gem "cssbundling-rails"
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
-gem 'sorcery'
+gem "sorcery"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -48,16 +48,16 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
+  gem "rspec-rails"
+  gem "factory_bot_rails"
   gem "faker"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem 'letter_opener'
-  gem 'letter_opener_web', '2.0.0'
+  gem "letter_opener"
+  gem "letter_opener_web", "2.0.0"
 end
 
 group :test do
@@ -66,6 +66,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'kaminari', '1.2.2'
-gem 'bootstrap5-kaminari-views'
-gem 'ransack'
+gem "kaminari", "1.2.2"
+gem "bootstrap5-kaminari-views"
+gem "ransack"
+gem "sassc-rails"

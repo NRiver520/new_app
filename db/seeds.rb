@@ -23,7 +23,7 @@
                                 300
                                when 4
                                 501
-                               else 
+                               else
                                 Faker::Number.between(from: 0, to: 550)
                                end
   )
@@ -33,5 +33,5 @@ user_ids = User.ids
 
 20.times do |index|
   user = User.find(user_ids.sample)
-  user.boards.create!(title: "タイトル#{index}",body: "本文#{index}")
+  user.boards.create!(title: "タイトル#{index}", body: "本文#{index}")
 end

@@ -6,6 +6,6 @@ class Board < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   def self.ransackable_attributes(auth_object = nil)
-    ["title"]
+    [ "title" ]
   end
 end
