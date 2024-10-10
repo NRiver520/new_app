@@ -9,7 +9,7 @@ module ApplicationHelper
     when "ノーランク"
       "border-light"
     when "ブロンズ"
-      'border-primary'
+      "border-primary"
     when "シルバー"
       "border-success"
     when "ゴールド"

@@ -2,7 +2,7 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
-  validates :password,confirmation: true, if: -> { new_record? || changes[:crypted_password] }
+  validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :username, presence: true, length: { maximum: 255 }, uniqueness: true
   validates :email, presence: true, uniqueness: true
@@ -28,16 +28,15 @@ class User < ApplicationRecord
   def rank
     case comments_count
     when nil
-      'ノーランク'
+      "ノーランク"
     when 1..50
-      'ブロンズ'
+      "ブロンズ"
     when 51..200
-      'シルバー'
+      "シルバー"
     when 201..500
-      'ゴールド'
+      "ゴールド"
     else
-      'プラチナ'
+      "プラチナ"
     end
   end
-
 end
