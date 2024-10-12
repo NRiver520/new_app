@@ -1,6 +1,6 @@
 class BoardsController < ApplicationController
   skip_before_action :require_login, only: %i[index show]
-  before_action :set_board, only: %i[edit update  destroy enter_password verify_password]
+  before_action :set_board, only: %i[edit update destroy enter_password verify_password]
 
   def index
     @q = Board.ransack(params[:q])
@@ -73,7 +73,7 @@ class BoardsController < ApplicationController
       redirect_to enter_password_board_path(@board)
     end
   end
-    
+
   private
 
   def set_board
