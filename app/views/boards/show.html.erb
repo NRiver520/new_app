@@ -31,9 +31,9 @@
 
   <div class="col-sm-12 col-12">
     <h5>返信</h5>
-    <% total_comments = @comments.size %>
+    <% total_comments = @comments.total_count %>
     <% @comments.each_with_index do |comment, index| %>
-      <%= render partial: 'comments/comment', locals: {comment: comment, index: total_comments - index } %>
+      <%= render partial: 'comments/comment', locals: { comment: comment, index: total_comments - ((@comments.current_page - 1) * @comments.limit_value + index) } %>
     <% end %>
   </div>
   <%= paginate @comments, theme: 'bootstrap-5' %>
