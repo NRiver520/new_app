@@ -70,3 +70,4 @@ gem "kaminari", "1.2.2"
 gem "bootstrap5-kaminari-views"
 gem "ransack"
 gem "sassc-rails"
+gem 'bcrypt', '~> 3.1.7'
