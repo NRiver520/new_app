@@ -5,6 +5,9 @@
         <div class="d-flex">
           <h4 class="card-title">
             <%= link_to board.title, board_path(board) %>
+            <% if board.password_digest.present? %>
+              <i class="fas fa-lock"></i>
+            <% end %>
           </h4>
         </div>
         <ul class="list-inline">
