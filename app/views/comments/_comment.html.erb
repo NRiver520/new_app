@@ -11,7 +11,7 @@
     </div>
     <ul class="list-inline">
       <li>
-        <img src="<%= comment.user.profile_image || asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(comment.user.rank) %>" width="30" height="30"><%= comment.user.username %>
+        <img src="<%= comment.user.profile_image.present? ? comment.user.profile_image.url : asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(comment.user.rank) %>" width="50" height="50"><%= comment.user.username %>
       </li>
       <li>
         <%= l comment.created_at, format: :strftime %>

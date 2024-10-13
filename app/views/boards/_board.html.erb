@@ -12,7 +12,7 @@
         </div>
         <ul class="list-inline">
           <li>
-            <img src="<%= board.user.profile_image || asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(board.user.rank) %>" width="40" height="40"><%= board.user.username %>
+            <img src="<%= board.user.profile_image.present? ? board.user.profile_image.url : asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(board.user.rank) %>" width="50" height="50"><%= board.user.username %>
           </li>
           <%= l board.created_at, format: :strftime %></li>
         </ul>

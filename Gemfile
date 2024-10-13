@@ -71,3 +71,4 @@ gem "bootstrap5-kaminari-views"
 gem "ransack"
 gem "sassc-rails"
 gem "bcrypt", "~> 3.1.7"
+gem 'carrierwave'
