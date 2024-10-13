@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   has_many :boards, dependent: :destroy
   has_many :comments, dependent: :destroy
+  mount_uploader :profile_image, ProfileImageUploader
 
   def own?(object)
     object&.user_id == id

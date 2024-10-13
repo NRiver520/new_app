@@ -1,0 +1,25 @@
+<div class="container pt-3">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <h1>ユーザー情報</h1>
+      <div class="mb-3">
+        <table class="table table-bordered mt-4">
+          <tr>
+            <th>ユーザー名</th>
+            <td><%= current_user.username %></td>
+          </tr>
+          <tr>
+            <th>メールアドレス</th>
+            <td><%= current_user.email %></td>
+          </tr>
+          <tr>
+            <th>アイコン</th>
+            <td><img src="<%= current_user.profile_image.present? ? current_user.profile_image.url : asset_path('default.png') %>" class="rounded-circle" width="50" height="50"></td>
+          </tr>
+        </table>
+        <%= link_to "編集" , edit_profile_path(@profile), class: "btn btn-primary" %>
+        <%= link_to "戻る" , root_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>
