@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../javascript/admin.js"],
+  "sourcesContent": ["import 'admin-lte/dist/js/adminlte.min';\n"],
+  "mappings": ";AAAA,OAAO;",
+  "names": []
+}
