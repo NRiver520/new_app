@@ -1,0 +1,33 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore environment files.
+/.env*
+!/.env*.erb
+
+# Ignore logfiles.
+/log/*
+!/log/.keep
+
+# Ignore tempfiles.
+/tmp/*
+!/tmp/.keep
+
+# Ignore storage (for ActiveStorage or similar).
+/storage/*
+!/storage/.keep
+
+# Ignore uploaded files in development.
+/public/uploads
+
+# Ignore node_modules (for JavaScript dependencies).
+/node_modules/
+
+# Ignore the compiled assets.
+/public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Ignore database files.
+/db/*.sqlite3
+/db/*.sqlite3-journal
