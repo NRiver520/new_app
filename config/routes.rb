@@ -24,5 +24,5 @@ Rails.application.routes.draw do
   get "manual", to: "manuals#index"
   get "privacy", to: "privacys#index"
   get "term", to: "terms#index"
-  resources :contacts, only: [:new, :create]
+  resources :contacts, only: [ :new, :create ]
 end
