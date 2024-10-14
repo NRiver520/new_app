@@ -1,4 +1,4 @@
-<main class="container mt-4">
+<main class="container mt-4" style="padding-bottom: 30px;">
   <div class="text-center bg-success text-white py-5">
     <h1>ベイブレード交流掲示板</h1>
   </div>
@@ -7,27 +7,51 @@
       <%= link_to 'このサイトの使い方' , '/manual' , class: 'nav-link h3' %>
     </h3>
   </nav>
-  <div class="row me-5 mt-5">
+  <div class="row me-5 mt-5 ">
     <!-- ピックアップ -->
-    <div class="col-12 mb-4">
-      <h2 class="h4">ピックアップ(今後開設）</h2>
+    <div class="col-8 mb-4">
+      <h2 class="h4">ピックアップ</h2>
       <ul class="list-group">
-        
+        <% if @pickup_boards.present? %>
+          <% @pickup_boards.each do |board| %>
+            <li class="list-group-item">
+              <%= link_to board.title, board_path(board) %>
+            </li>
+          <% end %>
+        <% else %>
+          <li class="list-group-item">ピックアップ掲示板はありません</li>
+        <% end %>
       </ul>
     </div>
 
     <!-- 人気 -->
-    <div class="col-12 mb-4">
-      <h2 class="h4">人気(今後開設）</h2>
+    <div class="col-8 mb-4">
+      <h2 class="h4">人気</h2>
       <ul class="list-group">
-       
+        <% if @popular_boards.present? %>
+          <% @popular_boards.each do |board| %>
+            <li class="list-group-item">
+              <%= link_to board.title,board_path(board) %>
+            </li>
+          <% end %>
+        <% else %>
+            <li class="list-group-item">人気の掲示板はありません</li>
+        <% end %>
     </div>
 
     <!-- 新着 -->
-    <div class="col-12 mb-4">
-      <h2 class="h4">新着(今後開設）</h2>
+    <div class="col-8 mb-4">
+      <h2 class="h4">新着</h2>
       <ul class="list-group">
-        
+        <% if @recent_boards.present? %>
+          <% @recent_boards.each do |board| %>
+            <li class="list-group-item">
+              <%= link_to board.title, board_path(board) %>
+            </li>
+          <% end %>
+        <% else %>
+          <li class="list-group-item">新着掲示板はありません</li>
+        <% end %>
       </ul>
     </div>
   </div>
