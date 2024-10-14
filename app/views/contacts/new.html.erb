@@ -1,0 +1,19 @@
+<div class="container" style="padding-top: 50px; padding-bottom: 50px;" >
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <h1>お問い合わせ</h1>
+      <%= form_with model: @contact, url: contacts_path, local: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :email, "メールアドレス" %>
+          <%= f.email_field :email, class: "form-control", required: true %>
+        </div>
+        <p>回答は入力されたアドレスに返信させていただきます</p>
+        <div class="mb-3">
+          <%= f.label :body, "本文" %>
+          <%= f.text_area :body, class: "form-control" %>
+        </div>
+        <%= f.submit "送信" ,class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
