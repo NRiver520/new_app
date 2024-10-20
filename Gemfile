@@ -72,3 +72,5 @@ gem "ransack"
 gem "sassc-rails"
 gem "bcrypt", "~> 3.1.7"
 gem "carrierwave"
+gem 'omniauth'
+gem 'omniauth-google-oauth2'

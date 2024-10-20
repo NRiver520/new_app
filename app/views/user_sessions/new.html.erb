@@ -16,6 +16,7 @@
       <% end %>
       <div class='text-center'>
         <%= link_to '会員登録へ', new_user_path %>
+        <%= link_to 'Login with Google', auth_at_provider_path(provider: :google) %>
       </div>
     </div>
   </div>

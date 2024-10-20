@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <h1>ユーザーネーム</h1>
+        <%= form_with url: create_username_path, method: :post do |f| %>
+          <%= label_tag :username, "ユーザーネームを入力してください" %>
+          <%= text_field_tag :username, nil, required: true %>
+          <%= submit_tag "ユーザーネームを設定" %>
+        <% end %>
+    </div>
+  </div>
+</div>
