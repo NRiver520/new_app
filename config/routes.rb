@@ -26,6 +26,6 @@ Rails.application.routes.draw do
   get "term", to: "terms#index"
   resources :contacts, only: [ :new, :create ]
   post "oauth/callback", to: "oauths#callback"
-  get "oauth/callback", to: "oauths#callback" 
+  get "oauth/callback", to: "oauths#callback"
   get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
 end
