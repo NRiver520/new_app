@@ -13,7 +13,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   mount_uploader :profile_image, ProfileImageUploader
 
-  has_many :authentications, :dependent => :destroy
+  has_many :authentications, :dependent: :destroy
   accepts_nested_attributes_for :authentications
 
   def own?(object)

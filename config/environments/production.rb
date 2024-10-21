@@ -111,6 +111,4 @@ Rails.application.configure do
     authentication:       "plain",
     enable_starttls_auto: true
   }
-  sorcery:
-    google_callback_url: 'https://bey-board-x-537a1cc30146.herokuapp.com/oauth/callback?provider=google'
 end

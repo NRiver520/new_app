@@ -84,6 +84,4 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: "localhost:3000" }
-  sorcery:
-    google_callback_url: 'http://localhost:3000/oauth/callback?provider=google'
 end

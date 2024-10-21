@@ -17,7 +17,7 @@ class OauthsController < ApplicationController
         signup_and_login(provider)
         flash[:success] = "#{provider.titleize}アカウントで新規登録しました,ユーザーネームを設定してください"
         redirect_to edit_profile_path(@profile)
-      rescue 
+      rescue
         flash[:danger] = "#{provider.titleize}アカウントでのログインに失敗しました"
         redirect_to root_path
       end

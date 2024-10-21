@@ -1,0 +1,2 @@
+ sorcery:
+    google_callback_url: 'https://bey-board-x-537a1cc30146.herokuapp.com/oauth/callback?provider=google'
