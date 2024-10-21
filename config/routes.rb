@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get "privacy", to: "privacys#index"
   get "term", to: "terms#index"
   resources :contacts, only: [ :new, :create ]
-  post "oauth/callback" => "oauths#callback"
-  get "oauth/callback" => "oauths#callback" 
-  get "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
+  post "oauth/callback", to: "oauths#callback"
+  get "oauth/callback", to: "oauths#callback" 
+  get "oauth/:provider", to: "oauths#oauth", as: :auth_at_provider
 end
