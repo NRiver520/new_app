@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   # resources :boards, only: %i[index new create show edit update destroy enter_password verify_password] do
   resource :profile, only: %i[show edit update]
+  get 'boards/autocomplete', to: 'boards#autocomplete', as: :autocomplete_boards
   resources :boards do
     resources :comments, only: %i[create destroy], shollow: true
     member do

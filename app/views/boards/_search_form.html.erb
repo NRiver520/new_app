@@ -1,6 +1,6 @@
 <%= search_form_for @q, url: url do |f| %>
-  <%= f.search_field :title_cont, class: 'form-control' , placeholder: 'タイトル' %>
-  <div class="input-group-append">
-    <%= f.submit "検索" , class: "btn btn-primary" %>
-  </div>
+    <%= f.search_field :title_cont, id: 'board-title-search', class: 'form-control' , placeholder: 'タイトル' %>
+    <div class="input-group-append">
+      <%= f.submit "検索" , class: "btn btn-primary ms-2" %>
+    </div>
 <% end %>
