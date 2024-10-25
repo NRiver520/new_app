@@ -65,7 +65,7 @@ class BoardsController < ApplicationController
   end
 
   def autocomplete
-    boards = Board.where('title LIKE ?', "%#{params[:term]}%").limit(10).pluck(:title)
+    boards = Board.where("title LIKE ?", "%#{params[:term]}%").limit(10).pluck(:title)
     render json: boards
   end
 
