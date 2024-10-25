@@ -6,12 +6,10 @@
         <span>ベイブレード交流掲示板</span>
       </div>
 
-      <!-- ハンバーガーメニューボタン（スマホ表示時のみ） -->
       <button class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#footerNav" aria-controls="footerNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="fas fa-chevron-up"></span>
       </button>
 
-      <!-- 通常のナビゲーション（PC表示時のみ） -->
       <nav class="nav d-none d-md-flex">
         <%= link_to '利用規約', '/term', class: 'nav-link' %>
         <%= link_to 'プライバシーポリシー', '/privacy', class: 'nav-link' %>
@@ -19,7 +17,6 @@
       </nav>
     </div>
 
-    <!-- 折りたたみナビゲーション（スマホ表示時のみ） -->
     <div class="collapse" id="footerNav">
       <nav class="nav flex-column">
         <%= link_to '利用規約', '/term', class: 'nav-link' %>

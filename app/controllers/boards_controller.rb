@@ -1,5 +1,5 @@
 class BoardsController < ApplicationController
-  skip_before_action :require_login, only: %i[index show]
+  skip_before_action :require_login, only: %i[index show autocomplete]
   before_action :set_board, only: %i[edit update destroy enter_password verify_password]
 
   def index
@@ -62,6 +62,11 @@ class BoardsController < ApplicationController
     else
       redirect_to @board
     end
+  end
+
+  def autocomplete
+    boards = Board.where("title LIKE ?", "%#{params[:term]}%").limit(10).pluck(:title)
+    render json: boards
   end
 
   def verify_password

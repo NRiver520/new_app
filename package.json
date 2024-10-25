@@ -18,10 +18,13 @@
     "autoprefixer": "^10.4.20",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.14.0",
     "nodemon": "^3.1.4",
     "postcss": "^8.4.45",
     "postcss-cli": "^11.0.0",
     "sass": "^1.78.0",
+    "stimulus-autocomplete": "^3.1.0",
     "yarn": "^1.22.22"
   },
   "browserslist": [
