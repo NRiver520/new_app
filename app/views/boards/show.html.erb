@@ -24,7 +24,7 @@
         </ul>
         <p class="card-text"><%= simple_format(@board.body) %></p>
         <% if @board.board_image_url.present? %>
-          <% # brakeman: ignore Cross-Site Scripting %>
+          <%# brakeman: ignore Cross-Site Scripting %>
           <%= link_to @board.board_image_url, target: "_blank" do %>
             <%= image_tag @board.board_image_url, width: "70px", height: "70px" %>
           <% end %>
