@@ -8,6 +8,11 @@
     <%= f.text_area :body, class: "form-control" %>
   </div>
   <div class="mb-3">
+    <%= f.label :画像（任意）%>
+    <%= f.file_field :board_image%>
+    <%= f.hidden_field :board_image_cache %>
+  </div>
+  <div class="mb-3">
     <%= f.label :password, "パスワード（任意）" %>
     <%= f.password_field :password, class: "form-control" %>
   </div>
