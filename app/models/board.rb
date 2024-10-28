@@ -7,6 +7,7 @@ class Board < ApplicationRecord
 
   belongs_to :user
   has_many :comments, dependent: :destroy
+  mount_uploader :board_image, BoardImageUploader
 
   def self.ransackable_attributes(auth_object = nil)
     [ "title" ]

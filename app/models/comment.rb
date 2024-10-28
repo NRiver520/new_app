@@ -4,6 +4,7 @@ class Comment < ApplicationRecord
   belongs_to :board
 
   after_create :increment_comment_count
+  mount_uploader :comment_image, CommentImageUploader
 
   private
 

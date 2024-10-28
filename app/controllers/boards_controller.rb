@@ -89,7 +89,7 @@ class BoardsController < ApplicationController
   end
 
   def board_params
-    params.require(:board).permit(:title, :body, :password).tap do |board_params|
+    params.require(:board).permit(:title, :body, :board_image, :board_image_cache, :password).tap do |board_params|
       board_params[:password] = nil if board_params[:password].blank?
     end
   end

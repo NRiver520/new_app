@@ -19,5 +19,10 @@
       </li>
     </ul>
     <p class="card-text"><%= simple_format(comment.body) %></p>
+    <% if comment.comment_image_url.present? %>
+      <%= link_to comment.comment_image_url, target: "_blank" do %>
+        <%= image_tag comment.comment_image_url, width: "70px", height: "70px" %>
+      <% end %>
+    <% end %>
   </div>
 </div>

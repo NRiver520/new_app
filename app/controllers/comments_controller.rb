@@ -28,6 +28,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:body).merge(board_id: params[:board_id])
+    params.require(:comment).permit(:body, :comment_image, :comment_image_cache).merge(board_id: params[:board_id])
   end
 end
