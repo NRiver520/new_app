@@ -1,5 +1,6 @@
 class UserSessionsController < ApplicationController
   skip_before_action :require_login, only: %i[new create]
+  include UserSessionsHelper
 
   def new; end
 
@@ -8,6 +9,7 @@ class UserSessionsController < ApplicationController
 
     if @user
       if @user.confirmed?
+        params[:remember_me] == "1" ? remember(@user) : forget(@user)
         flash[:success] = "ログインしました"
         redirect_to root_path
       else
@@ -22,7 +24,7 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    logout
+    logout if logged_in?
     flash[:success] = "ログアウトしました"
     redirect_to root_path, status: :see_other
   end
