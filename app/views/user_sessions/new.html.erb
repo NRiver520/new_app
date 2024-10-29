@@ -12,6 +12,12 @@
           <%= f.label :パスワード, class: "form-label" %>
           <%= f.password_field :password, class: "form-control" %>
         </div>
+        <div class="mb-3 form-check">
+          <%= f.label :remember_me, class: "form-check-label" do %>
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <span>このコンピュータにログイン情報を保存</span>
+          <% end %>
+        </div>
         <%= f.submit "ログイン", class: "btn btn-primary" %>
       <% end %>
       <div class='text-center'>
