@@ -3,7 +3,7 @@
     <div class="d-flex">
       <% if current_user && current_user.own?(comment) %>
         <div class='ms-auto'>
-          <%= link_to board_comment_path(comment.board, comment), id: "button-delete-#{comment.id}", data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } do %>
+          <%= link_to comment_path(comment), id: "button-delete-#{comment.id}", data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' } do %>
             <i class="bi bi-trash-fill"></i>
           <% end %>
         </div>

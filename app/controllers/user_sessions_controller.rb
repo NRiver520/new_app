@@ -25,6 +25,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     logout if logged_in?
+    session.delete(:authenticated_board_id)
     flash[:success] = "ログアウトしました"
     redirect_to root_path, status: :see_other
   end
