@@ -2481,7 +2481,7 @@ var require_bootstrap = __commonJS({
           return normalizeData(element.getAttribute(`data-bs-${normalizeDataKey(key)}`));
         }
       };
-      class Config2 {
+      class Config {
         // Getters
         static get Default() {
           return {};
@@ -2492,27 +2492,27 @@ var require_bootstrap = __commonJS({
         static get NAME() {
           throw new Error('You have to implement the static method "NAME", for each component!');
         }
-        _getConfig(config2) {
-          config2 = this._mergeConfigObj(config2);
-          config2 = this._configAfterMerge(config2);
-          this._typeCheckConfig(config2);
-          return config2;
+        _getConfig(config) {
+          config = this._mergeConfigObj(config);
+          config = this._configAfterMerge(config);
+          this._typeCheckConfig(config);
+          return config;
         }
-        _configAfterMerge(config2) {
-          return config2;
+        _configAfterMerge(config) {
+          return config;
         }
-        _mergeConfigObj(config2, element) {
+        _mergeConfigObj(config, element) {
           const jsonConfig = isElement(element) ? Manipulator.getDataAttribute(element, "config") : {};
           return {
             ...this.constructor.Default,
             ...typeof jsonConfig === "object" ? jsonConfig : {},
             ...isElement(element) ? Manipulator.getDataAttributes(element) : {},
-            ...typeof config2 === "object" ? config2 : {}
+            ...typeof config === "object" ? config : {}
           };
         }
-        _typeCheckConfig(config2, configTypes = this.constructor.DefaultType) {
+        _typeCheckConfig(config, configTypes = this.constructor.DefaultType) {
           for (const [property, expectedTypes] of Object.entries(configTypes)) {
-            const value = config2[property];
+            const value = config[property];
             const valueType = isElement(value) ? "element" : toType(value);
             if (!new RegExp(expectedTypes).test(valueType)) {
               throw new TypeError(`${this.constructor.NAME.toUpperCase()}: Option "${property}" provided type "${valueType}" but expected type "${expectedTypes}".`);
@@ -2521,15 +2521,15 @@ var require_bootstrap = __commonJS({
         }
       }
       const VERSION = "5.3.3";
-      class BaseComponent extends Config2 {
-        constructor(element, config2) {
+      class BaseComponent extends Config {
+        constructor(element, config) {
           super();
           element = getElement(element);
           if (!element) {
             return;
           }
           this._element = element;
-          this._config = this._getConfig(config2);
+          this._config = this._getConfig(config);
           Data.set(this._element, this.constructor.DATA_KEY, this);
         }
         // Public
@@ -2543,18 +2543,18 @@ var require_bootstrap = __commonJS({
         _queueCallback(callback, element, isAnimated = true) {
           executeAfterTransition(callback, element, isAnimated);
         }
-        _getConfig(config2) {
-          config2 = this._mergeConfigObj(config2, this._element);
-          config2 = this._configAfterMerge(config2);
-          this._typeCheckConfig(config2);
-          return config2;
+        _getConfig(config) {
+          config = this._mergeConfigObj(config, this._element);
+          config = this._configAfterMerge(config);
+          this._typeCheckConfig(config);
+          return config;
         }
         // Static
         static getInstance(element) {
           return Data.get(getElement(element), this.DATA_KEY);
         }
-        static getOrCreateInstance(element, config2 = {}) {
-          return this.getInstance(element) || new this(element, typeof config2 === "object" ? config2 : null);
+        static getOrCreateInstance(element, config = {}) {
+          return this.getInstance(element) || new this(element, typeof config === "object" ? config : null);
         }
         static get VERSION() {
           return VERSION;
@@ -2687,16 +2687,16 @@ var require_bootstrap = __commonJS({
           this.dispose();
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
             const data = Alert.getOrCreateInstance(this);
-            if (typeof config2 !== "string") {
+            if (typeof config !== "string") {
               return;
             }
-            if (data[config2] === void 0 || config2.startsWith("_") || config2 === "constructor") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (data[config] === void 0 || config.startsWith("_") || config === "constructor") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2](this);
+            data[config](this);
           });
         }
       }
@@ -2719,11 +2719,11 @@ var require_bootstrap = __commonJS({
           this._element.setAttribute("aria-pressed", this._element.classList.toggle(CLASS_NAME_ACTIVE$3));
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
             const data = Button.getOrCreateInstance(this);
-            if (config2 === "toggle") {
-              data[config2]();
+            if (config === "toggle") {
+              data[config]();
             }
           });
         }
@@ -2756,14 +2756,14 @@ var require_bootstrap = __commonJS({
         leftCallback: "(function|null)",
         rightCallback: "(function|null)"
       };
-      class Swipe extends Config2 {
-        constructor(element, config2) {
+      class Swipe extends Config {
+        constructor(element, config) {
           super();
           this._element = element;
           if (!element || !Swipe.isSupported()) {
             return;
           }
-          this._config = this._getConfig(config2);
+          this._config = this._getConfig(config);
           this._deltaX = 0;
           this._supportPointerEvents = Boolean(window.PointerEvent);
           this._initEvents();
@@ -2888,8 +2888,8 @@ var require_bootstrap = __commonJS({
         wrap: "boolean"
       };
       class Carousel extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._interval = null;
           this._activeElement = null;
           this._isSliding = false;
@@ -2967,9 +2967,9 @@ var require_bootstrap = __commonJS({
           super.dispose();
         }
         // Private
-        _configAfterMerge(config2) {
-          config2.defaultInterval = config2.interval;
-          return config2;
+        _configAfterMerge(config) {
+          config.defaultInterval = config.interval;
+          return config;
         }
         _addEventListeners() {
           if (this._config.keyboard) {
@@ -3115,18 +3115,18 @@ var require_bootstrap = __commonJS({
           return order === ORDER_PREV ? DIRECTION_RIGHT : DIRECTION_LEFT;
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = Carousel.getOrCreateInstance(this, config2);
-            if (typeof config2 === "number") {
-              data.to(config2);
+            const data = Carousel.getOrCreateInstance(this, config);
+            if (typeof config === "number") {
+              data.to(config);
               return;
             }
-            if (typeof config2 === "string") {
-              if (data[config2] === void 0 || config2.startsWith("_") || config2 === "constructor") {
-                throw new TypeError(`No method named "${config2}"`);
+            if (typeof config === "string") {
+              if (data[config] === void 0 || config.startsWith("_") || config === "constructor") {
+                throw new TypeError(`No method named "${config}"`);
               }
-              data[config2]();
+              data[config]();
             }
           });
         }
@@ -3187,8 +3187,8 @@ var require_bootstrap = __commonJS({
         toggle: "boolean"
       };
       class Collapse extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._isTransitioning = false;
           this._triggerArray = [];
           const toggleList = SelectorEngine.find(SELECTOR_DATA_TOGGLE$4);
@@ -3296,10 +3296,10 @@ var require_bootstrap = __commonJS({
           return element.classList.contains(CLASS_NAME_SHOW$7);
         }
         // Private
-        _configAfterMerge(config2) {
-          config2.toggle = Boolean(config2.toggle);
-          config2.parent = getElement(config2.parent);
-          return config2;
+        _configAfterMerge(config) {
+          config.toggle = Boolean(config.toggle);
+          config.parent = getElement(config.parent);
+          return config;
         }
         _getDimension() {
           return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT;
@@ -3330,18 +3330,18 @@ var require_bootstrap = __commonJS({
           }
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           const _config = {};
-          if (typeof config2 === "string" && /show|hide/.test(config2)) {
+          if (typeof config === "string" && /show|hide/.test(config)) {
             _config.toggle = false;
           }
           return this.each(function() {
             const data = Collapse.getOrCreateInstance(this, _config);
-            if (typeof config2 === "string") {
-              if (typeof data[config2] === "undefined") {
-                throw new TypeError(`No method named "${config2}"`);
+            if (typeof config === "string") {
+              if (typeof data[config] === "undefined") {
+                throw new TypeError(`No method named "${config}"`);
               }
-              data[config2]();
+              data[config]();
             }
           });
         }
@@ -3410,8 +3410,8 @@ var require_bootstrap = __commonJS({
         reference: "(string|element|object)"
       };
       class Dropdown extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._popper = null;
           this._parent = this._element.parentNode;
           this._menu = SelectorEngine.next(this._element, SELECTOR_MENU)[0] || SelectorEngine.prev(this._element, SELECTOR_MENU)[0] || SelectorEngine.findOne(SELECTOR_MENU, this._parent);
@@ -3495,12 +3495,12 @@ var require_bootstrap = __commonJS({
           Manipulator.removeDataAttribute(this._menu, "popper");
           EventHandler.trigger(this._element, EVENT_HIDDEN$5, relatedTarget);
         }
-        _getConfig(config2) {
-          config2 = super._getConfig(config2);
-          if (typeof config2.reference === "object" && !isElement(config2.reference) && typeof config2.reference.getBoundingClientRect !== "function") {
+        _getConfig(config) {
+          config = super._getConfig(config);
+          if (typeof config.reference === "object" && !isElement(config.reference) && typeof config.reference.getBoundingClientRect !== "function") {
             throw new TypeError(`${NAME$a.toUpperCase()}: Option "reference" provided type "object" without a required "getBoundingClientRect" method.`);
           }
-          return config2;
+          return config;
         }
         _createPopper() {
           if (typeof Popper__namespace === "undefined") {
@@ -3593,16 +3593,16 @@ var require_bootstrap = __commonJS({
           getNextActiveElement(items, target, key === ARROW_DOWN_KEY$1, !items.includes(target)).focus();
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = Dropdown.getOrCreateInstance(this, config2);
-            if (typeof config2 !== "string") {
+            const data = Dropdown.getOrCreateInstance(this, config);
+            if (typeof config !== "string") {
               return;
             }
-            if (typeof data[config2] === "undefined") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (typeof data[config] === "undefined") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2]();
+            data[config]();
           });
         }
         static clearMenus(event) {
@@ -3687,10 +3687,10 @@ var require_bootstrap = __commonJS({
         isVisible: "boolean",
         rootElement: "(element|string)"
       };
-      class Backdrop extends Config2 {
-        constructor(config2) {
+      class Backdrop extends Config {
+        constructor(config) {
           super();
-          this._config = this._getConfig(config2);
+          this._config = this._getConfig(config);
           this._isAppended = false;
           this._element = null;
         }
@@ -3751,9 +3751,9 @@ var require_bootstrap = __commonJS({
           }
           return this._element;
         }
-        _configAfterMerge(config2) {
-          config2.rootElement = getElement(config2.rootElement);
-          return config2;
+        _configAfterMerge(config) {
+          config.rootElement = getElement(config.rootElement);
+          return config;
         }
         _append() {
           if (this._isAppended) {
@@ -3787,10 +3787,10 @@ var require_bootstrap = __commonJS({
         autofocus: "boolean",
         trapElement: "element"
       };
-      class FocusTrap extends Config2 {
-        constructor(config2) {
+      class FocusTrap extends Config {
+        constructor(config) {
           super();
-          this._config = this._getConfig(config2);
+          this._config = this._getConfig(config);
           this._isActive = false;
           this._lastTabNavDirection = null;
         }
@@ -3956,8 +3956,8 @@ var require_bootstrap = __commonJS({
         keyboard: "boolean"
       };
       class Modal extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
           this._backdrop = this._initializeBackDrop();
           this._focustrap = this._initializeFocusTrap();
@@ -4150,16 +4150,16 @@ var require_bootstrap = __commonJS({
           this._element.style.paddingRight = "";
         }
         // Static
-        static jQueryInterface(config2, relatedTarget) {
+        static jQueryInterface(config, relatedTarget) {
           return this.each(function() {
-            const data = Modal.getOrCreateInstance(this, config2);
-            if (typeof config2 !== "string") {
+            const data = Modal.getOrCreateInstance(this, config);
+            if (typeof config !== "string") {
               return;
             }
-            if (typeof data[config2] === "undefined") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (typeof data[config] === "undefined") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2](relatedTarget);
+            data[config](relatedTarget);
           });
         }
       }
@@ -4218,8 +4218,8 @@ var require_bootstrap = __commonJS({
         scroll: "boolean"
       };
       class Offcanvas extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._isShown = false;
           this._backdrop = this._initializeBackDrop();
           this._focustrap = this._initializeFocusTrap();
@@ -4334,16 +4334,16 @@ var require_bootstrap = __commonJS({
           });
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = Offcanvas.getOrCreateInstance(this, config2);
-            if (typeof config2 !== "string") {
+            const data = Offcanvas.getOrCreateInstance(this, config);
+            if (typeof config !== "string") {
               return;
             }
-            if (data[config2] === void 0 || config2.startsWith("_") || config2 === "constructor") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (data[config] === void 0 || config.startsWith("_") || config === "constructor") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2](this);
+            data[config](this);
           });
         }
       }
@@ -4480,10 +4480,10 @@ var require_bootstrap = __commonJS({
         entry: "(string|element|function|null)",
         selector: "(string|element)"
       };
-      class TemplateFactory extends Config2 {
-        constructor(config2) {
+      class TemplateFactory extends Config {
+        constructor(config) {
           super();
-          this._config = this._getConfig(config2);
+          this._config = this._getConfig(config);
         }
         // Getters
         static get Default() {
@@ -4497,7 +4497,7 @@ var require_bootstrap = __commonJS({
         }
         // Public
         getContent() {
-          return Object.values(this._config.content).map((config2) => this._resolvePossibleFunction(config2)).filter(Boolean);
+          return Object.values(this._config.content).map((config) => this._resolvePossibleFunction(config)).filter(Boolean);
         }
         hasContent() {
           return this.getContent().length > 0;
@@ -4524,9 +4524,9 @@ var require_bootstrap = __commonJS({
           return template;
         }
         // Private
-        _typeCheckConfig(config2) {
-          super._typeCheckConfig(config2);
-          this._checkContent(config2.content);
+        _typeCheckConfig(config) {
+          super._typeCheckConfig(config);
+          this._checkContent(config.content);
         }
         _checkContent(arg) {
           for (const [selector, content] of Object.entries(arg)) {
@@ -4639,11 +4639,11 @@ var require_bootstrap = __commonJS({
         trigger: "string"
       };
       class Tooltip extends BaseComponent {
-        constructor(element, config2) {
+        constructor(element, config) {
           if (typeof Popper__namespace === "undefined") {
             throw new TypeError("Bootstrap's tooltips require Popper (https://popper.js.org)");
           }
-          super(element, config2);
+          super(element, config);
           this._isEnabled = true;
           this._timeout = 0;
           this._isHovered = null;
@@ -4963,48 +4963,48 @@ var require_bootstrap = __commonJS({
         _isWithActiveTrigger() {
           return Object.values(this._activeTrigger).includes(true);
         }
-        _getConfig(config2) {
+        _getConfig(config) {
           const dataAttributes = Manipulator.getDataAttributes(this._element);
           for (const dataAttribute of Object.keys(dataAttributes)) {
             if (DISALLOWED_ATTRIBUTES.has(dataAttribute)) {
               delete dataAttributes[dataAttribute];
             }
           }
-          config2 = {
+          config = {
             ...dataAttributes,
-            ...typeof config2 === "object" && config2 ? config2 : {}
+            ...typeof config === "object" && config ? config : {}
           };
-          config2 = this._mergeConfigObj(config2);
-          config2 = this._configAfterMerge(config2);
-          this._typeCheckConfig(config2);
-          return config2;
+          config = this._mergeConfigObj(config);
+          config = this._configAfterMerge(config);
+          this._typeCheckConfig(config);
+          return config;
         }
-        _configAfterMerge(config2) {
-          config2.container = config2.container === false ? document.body : getElement(config2.container);
-          if (typeof config2.delay === "number") {
-            config2.delay = {
-              show: config2.delay,
-              hide: config2.delay
+        _configAfterMerge(config) {
+          config.container = config.container === false ? document.body : getElement(config.container);
+          if (typeof config.delay === "number") {
+            config.delay = {
+              show: config.delay,
+              hide: config.delay
             };
           }
-          if (typeof config2.title === "number") {
-            config2.title = config2.title.toString();
+          if (typeof config.title === "number") {
+            config.title = config.title.toString();
           }
-          if (typeof config2.content === "number") {
-            config2.content = config2.content.toString();
+          if (typeof config.content === "number") {
+            config.content = config.content.toString();
           }
-          return config2;
+          return config;
         }
         _getDelegateConfig() {
-          const config2 = {};
+          const config = {};
           for (const [key, value] of Object.entries(this._config)) {
             if (this.constructor.Default[key] !== value) {
-              config2[key] = value;
+              config[key] = value;
             }
           }
-          config2.selector = false;
-          config2.trigger = "manual";
-          return config2;
+          config.selector = false;
+          config.trigger = "manual";
+          return config;
         }
         _disposePopper() {
           if (this._popper) {
@@ -5017,16 +5017,16 @@ var require_bootstrap = __commonJS({
           }
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = Tooltip.getOrCreateInstance(this, config2);
-            if (typeof config2 !== "string") {
+            const data = Tooltip.getOrCreateInstance(this, config);
+            if (typeof config !== "string") {
               return;
             }
-            if (typeof data[config2] === "undefined") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (typeof data[config] === "undefined") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2]();
+            data[config]();
           });
         }
       }
@@ -5072,16 +5072,16 @@ var require_bootstrap = __commonJS({
           return this._resolvePossibleFunction(this._config.content);
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = Popover.getOrCreateInstance(this, config2);
-            if (typeof config2 !== "string") {
+            const data = Popover.getOrCreateInstance(this, config);
+            if (typeof config !== "string") {
               return;
             }
-            if (typeof data[config2] === "undefined") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (typeof data[config] === "undefined") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2]();
+            data[config]();
           });
         }
       }
@@ -5121,8 +5121,8 @@ var require_bootstrap = __commonJS({
         threshold: "array"
       };
       class ScrollSpy extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._targetLinks = /* @__PURE__ */ new Map();
           this._observableSections = /* @__PURE__ */ new Map();
           this._rootElement = getComputedStyle(this._element).overflowY === "visible" ? null : this._element;
@@ -5162,13 +5162,13 @@ var require_bootstrap = __commonJS({
           super.dispose();
         }
         // Private
-        _configAfterMerge(config2) {
-          config2.target = getElement(config2.target) || document.body;
-          config2.rootMargin = config2.offset ? `${config2.offset}px 0px -30%` : config2.rootMargin;
-          if (typeof config2.threshold === "string") {
-            config2.threshold = config2.threshold.split(",").map((value) => Number.parseFloat(value));
+        _configAfterMerge(config) {
+          config.target = getElement(config.target) || document.body;
+          config.rootMargin = config.offset ? `${config.offset}px 0px -30%` : config.rootMargin;
+          if (typeof config.threshold === "string") {
+            config.threshold = config.threshold.split(",").map((value) => Number.parseFloat(value));
           }
-          return config2;
+          return config;
         }
         _maybeEnableSmoothScroll() {
           if (!this._config.smoothScroll) {
@@ -5275,16 +5275,16 @@ var require_bootstrap = __commonJS({
           }
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = ScrollSpy.getOrCreateInstance(this, config2);
-            if (typeof config2 !== "string") {
+            const data = ScrollSpy.getOrCreateInstance(this, config);
+            if (typeof config !== "string") {
               return;
             }
-            if (data[config2] === void 0 || config2.startsWith("_") || config2 === "constructor") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (data[config] === void 0 || config.startsWith("_") || config === "constructor") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2]();
+            data[config]();
           });
         }
       }
@@ -5487,16 +5487,16 @@ var require_bootstrap = __commonJS({
           return elem.closest(SELECTOR_OUTER) || elem;
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
             const data = Tab.getOrCreateInstance(this);
-            if (typeof config2 !== "string") {
+            if (typeof config !== "string") {
               return;
             }
-            if (data[config2] === void 0 || config2.startsWith("_") || config2 === "constructor") {
-              throw new TypeError(`No method named "${config2}"`);
+            if (data[config] === void 0 || config.startsWith("_") || config === "constructor") {
+              throw new TypeError(`No method named "${config}"`);
             }
-            data[config2]();
+            data[config]();
           });
         }
       }
@@ -5541,8 +5541,8 @@ var require_bootstrap = __commonJS({
         delay: 5e3
       };
       class Toast extends BaseComponent {
-        constructor(element, config2) {
-          super(element, config2);
+        constructor(element, config) {
+          super(element, config);
           this._timeout = null;
           this._hasMouseInteraction = false;
           this._hasKeyboardInteraction = false;
@@ -5650,14 +5650,14 @@ var require_bootstrap = __commonJS({
           this._timeout = null;
         }
         // Static
-        static jQueryInterface(config2) {
+        static jQueryInterface(config) {
           return this.each(function() {
-            const data = Toast.getOrCreateInstance(this, config2);
-            if (typeof config2 === "string") {
-              if (typeof data[config2] === "undefined") {
-                throw new TypeError(`No method named "${config2}"`);
+            const data = Toast.getOrCreateInstance(this, config);
+            if (typeof config === "string") {
+              if (typeof data[config] === "undefined") {
+                throw new TypeError(`No method named "${config}"`);
               }
-              data[config2](this);
+              data[config](this);
             }
           });
         }
@@ -5700,7 +5700,6 @@ __export(turbo_es2017_esm_exports, {
   StreamSourceElement: () => StreamSourceElement,
   cache: () => cache,
   clearCache: () => clearCache,
-  config: () => config,
   connectStreamSource: () => connectStreamSource,
   disconnectStreamSource: () => disconnectStreamSource,
   fetch: () => fetchWithTurboHeaders,
@@ -5719,23 +5718,23 @@ __export(turbo_es2017_esm_exports, {
 });
 (function(prototype) {
   if (typeof prototype.requestSubmit == "function") return;
-  prototype.requestSubmit = function(submitter2) {
-    if (submitter2) {
-      validateSubmitter(submitter2, this);
-      submitter2.click();
+  prototype.requestSubmit = function(submitter) {
+    if (submitter) {
+      validateSubmitter(submitter, this);
+      submitter.click();
     } else {
-      submitter2 = document.createElement("input");
-      submitter2.type = "submit";
-      submitter2.hidden = true;
-      this.appendChild(submitter2);
-      submitter2.click();
-      this.removeChild(submitter2);
+      submitter = document.createElement("input");
+      submitter.type = "submit";
+      submitter.hidden = true;
+      this.appendChild(submitter);
+      submitter.click();
+      this.removeChild(submitter);
     }
   };
-  function validateSubmitter(submitter2, form) {
-    submitter2 instanceof HTMLElement || raise(TypeError, "parameter 1 is not of type 'HTMLElement'");
-    submitter2.type == "submit" || raise(TypeError, "The specified element is not a submit button");
-    submitter2.form == form || raise(DOMException, "The specified element is not owned by this form element", "NotFoundError");
+  function validateSubmitter(submitter, form) {
+    submitter instanceof HTMLElement || raise(TypeError, "parameter 1 is not of type 'HTMLElement'");
+    submitter.type == "submit" || raise(TypeError, "The specified element is not a submit button");
+    submitter.form == form || raise(DOMException, "The specified element is not owned by this form element", "NotFoundError");
   }
   function raise(errorConstructor, message, name) {
     throw new errorConstructor("Failed to execute 'requestSubmit' on 'HTMLFormElement': " + message + ".", name);
@@ -5748,9 +5747,9 @@ function findSubmitterFromClickTarget(target) {
   return candidate?.type == "submit" ? candidate : null;
 }
 function clickCaptured(event) {
-  const submitter2 = findSubmitterFromClickTarget(event.target);
-  if (submitter2 && submitter2.form) {
-    submittersByForm.set(submitter2.form, submitter2);
+  const submitter = findSubmitterFromClickTarget(event.target);
+  if (submitter && submitter.form) {
+    submittersByForm.set(submitter.form, submitter);
   }
 }
 (function() {
@@ -5836,9 +5835,6 @@ var FrameElement = class _FrameElement extends HTMLElement {
     } else {
       this.removeAttribute("refresh");
     }
-  }
-  get shouldReloadWithMorph() {
-    return this.src && this.refresh === "morph";
   }
   /**
    * Determines if the element is loading
@@ -5927,74 +5923,107 @@ function frameLoadingStyleFromString(style) {
       return FrameLoadingStyle.eager;
   }
 }
-var drive = {
-  enabled: true,
-  progressBarDelay: 500,
-  unvisitableExtensions: /* @__PURE__ */ new Set(
-    [
-      ".7z",
-      ".aac",
-      ".apk",
-      ".avi",
-      ".bmp",
-      ".bz2",
-      ".css",
-      ".csv",
-      ".deb",
-      ".dmg",
-      ".doc",
-      ".docx",
-      ".exe",
-      ".gif",
-      ".gz",
-      ".heic",
-      ".heif",
-      ".ico",
-      ".iso",
-      ".jpeg",
-      ".jpg",
-      ".js",
-      ".json",
-      ".m4a",
-      ".mkv",
-      ".mov",
-      ".mp3",
-      ".mp4",
-      ".mpeg",
-      ".mpg",
-      ".msi",
-      ".ogg",
-      ".ogv",
-      ".pdf",
-      ".pkg",
-      ".png",
-      ".ppt",
-      ".pptx",
-      ".rar",
-      ".rtf",
-      ".svg",
-      ".tar",
-      ".tif",
-      ".tiff",
-      ".txt",
-      ".wav",
-      ".webm",
-      ".webp",
-      ".wma",
-      ".wmv",
-      ".xls",
-      ".xlsx",
-      ".xml",
-      ".zip"
-    ]
-  )
+function expandURL(locatable) {
+  return new URL(locatable.toString(), document.baseURI);
+}
+function getAnchor(url) {
+  let anchorMatch;
+  if (url.hash) {
+    return url.hash.slice(1);
+  } else if (anchorMatch = url.href.match(/#(.*)$/)) {
+    return anchorMatch[1];
+  }
+}
+function getAction$1(form, submitter) {
+  const action = submitter?.getAttribute("formaction") || form.getAttribute("action") || form.action;
+  return expandURL(action);
+}
+function getExtension(url) {
+  return (getLastPathComponent(url).match(/\.[^.]*$/) || [])[0] || "";
+}
+function isHTML(url) {
+  return !!getExtension(url).match(/^(?:|\.(?:htm|html|xhtml|php))$/);
+}
+function isPrefixedBy(baseURL, url) {
+  const prefix = getPrefix(url);
+  return baseURL.href === expandURL(prefix).href || baseURL.href.startsWith(prefix);
+}
+function locationIsVisitable(location2, rootLocation) {
+  return isPrefixedBy(location2, rootLocation) && isHTML(location2);
+}
+function getRequestURL(url) {
+  const anchor = getAnchor(url);
+  return anchor != null ? url.href.slice(0, -(anchor.length + 1)) : url.href;
+}
+function toCacheKey(url) {
+  return getRequestURL(url);
+}
+function urlsAreEqual(left, right) {
+  return expandURL(left).href == expandURL(right).href;
+}
+function getPathComponents(url) {
+  return url.pathname.split("/").slice(1);
+}
+function getLastPathComponent(url) {
+  return getPathComponents(url).slice(-1)[0];
+}
+function getPrefix(url) {
+  return addTrailingSlash(url.origin + url.pathname);
+}
+function addTrailingSlash(value) {
+  return value.endsWith("/") ? value : value + "/";
+}
+var FetchResponse = class {
+  constructor(response) {
+    this.response = response;
+  }
+  get succeeded() {
+    return this.response.ok;
+  }
+  get failed() {
+    return !this.succeeded;
+  }
+  get clientError() {
+    return this.statusCode >= 400 && this.statusCode <= 499;
+  }
+  get serverError() {
+    return this.statusCode >= 500 && this.statusCode <= 599;
+  }
+  get redirected() {
+    return this.response.redirected;
+  }
+  get location() {
+    return expandURL(this.response.url);
+  }
+  get isHTML() {
+    return this.contentType && this.contentType.match(/^(?:text\/([^\s;,]+\b)?html|application\/xhtml\+xml)\b/);
+  }
+  get statusCode() {
+    return this.response.status;
+  }
+  get contentType() {
+    return this.header("Content-Type");
+  }
+  get responseText() {
+    return this.response.clone().text();
+  }
+  get responseHTML() {
+    if (this.isHTML) {
+      return this.response.clone().text();
+    } else {
+      return Promise.resolve(void 0);
+    }
+  }
+  header(name) {
+    return this.response.headers.get(name);
+  }
 };
 function activateScriptElement(element) {
   if (element.getAttribute("data-turbo-eval") == "false") {
     return element;
   } else {
     const createdScriptElement = document.createElement("script");
-    const cspNonce = getCspNonce();
+    const cspNonce = getMetaContent("csp-nonce");
     if (cspNonce) {
       createdScriptElement.nonce = cspNonce;
     }
@@ -6027,10 +6056,6 @@ function dispatch(eventName, { target, cancelable, detail } = {}) {
     document.documentElement.dispatchEvent(event);
   }
   return event;
-}
-function cancelEvent(event) {
-  event.preventDefault();
-  event.stopImmediatePropagation();
 }
 function nextRepaint() {
   if (document.visibilityState === "hidden") {
@@ -6136,13 +6161,6 @@ function getMetaContent(name) {
   const element = getMetaElement(name);
   return element && element.content;
 }
-function getCspNonce() {
-  const element = getMetaElement("csp-nonce");
-  if (element) {
-    const { nonce, content } = element;
-    return nonce == "" ? content : nonce;
-  }
-}
 function setMetaContent(name, content) {
   let element = getMetaElement(name);
   if (!element) {
@@ -6198,134 +6216,6 @@ function debounce(fn, delay) {
     timeoutId = setTimeout(callback, delay);
   };
 }
-var submitter = {
-  "aria-disabled": {
-    beforeSubmit: (submitter2) => {
-      submitter2.setAttribute("aria-disabled", "true");
-      submitter2.addEventListener("click", cancelEvent);
-    },
-    afterSubmit: (submitter2) => {
-      submitter2.removeAttribute("aria-disabled");
-      submitter2.removeEventListener("click", cancelEvent);
-    }
-  },
-  "disabled": {
-    beforeSubmit: (submitter2) => submitter2.disabled = true,
-    afterSubmit: (submitter2) => submitter2.disabled = false
-  }
-};
-var Config = class {
-  #submitter = null;
-  constructor(config2) {
-    Object.assign(this, config2);
-  }
-  get submitter() {
-    return this.#submitter;
-  }
-  set submitter(value) {
-    this.#submitter = submitter[value] || value;
-  }
-};
-var forms = new Config({
-  mode: "on",
-  submitter: "disabled"
-});
-var config = {
-  drive,
-  forms
-};
-function expandURL(locatable) {
-  return new URL(locatable.toString(), document.baseURI);
-}
-function getAnchor(url) {
-  let anchorMatch;
-  if (url.hash) {
-    return url.hash.slice(1);
-  } else if (anchorMatch = url.href.match(/#(.*)$/)) {
-    return anchorMatch[1];
-  }
-}
-function getAction$1(form, submitter2) {
-  const action = submitter2?.getAttribute("formaction") || form.getAttribute("action") || form.action;
-  return expandURL(action);
-}
-function getExtension(url) {
-  return (getLastPathComponent(url).match(/\.[^.]*$/) || [])[0] || "";
-}
-function isPrefixedBy(baseURL, url) {
-  const prefix = getPrefix(url);
-  return baseURL.href === expandURL(prefix).href || baseURL.href.startsWith(prefix);
-}
-function locationIsVisitable(location2, rootLocation) {
-  return isPrefixedBy(location2, rootLocation) && !config.drive.unvisitableExtensions.has(getExtension(location2));
-}
-function getRequestURL(url) {
-  const anchor = getAnchor(url);
-  return anchor != null ? url.href.slice(0, -(anchor.length + 1)) : url.href;
-}
-function toCacheKey(url) {
-  return getRequestURL(url);
-}
-function urlsAreEqual(left, right) {
-  return expandURL(left).href == expandURL(right).href;
-}
-function getPathComponents(url) {
-  return url.pathname.split("/").slice(1);
-}
-function getLastPathComponent(url) {
-  return getPathComponents(url).slice(-1)[0];
-}
-function getPrefix(url) {
-  return addTrailingSlash(url.origin + url.pathname);
-}
-function addTrailingSlash(value) {
-  return value.endsWith("/") ? value : value + "/";
-}
-var FetchResponse = class {
-  constructor(response) {
-    this.response = response;
-  }
-  get succeeded() {
-    return this.response.ok;
-  }
-  get failed() {
-    return !this.succeeded;
-  }
-  get clientError() {
-    return this.statusCode >= 400 && this.statusCode <= 499;
-  }
-  get serverError() {
-    return this.statusCode >= 500 && this.statusCode <= 599;
-  }
-  get redirected() {
-    return this.response.redirected;
-  }
-  get location() {
-    return expandURL(this.response.url);
-  }
-  get isHTML() {
-    return this.contentType && this.contentType.match(/^(?:text\/([^\s;,]+\b)?html|application\/xhtml\+xml)\b/);
-  }
-  get statusCode() {
-    return this.response.status;
-  }
-  get contentType() {
-    return this.header("Content-Type");
-  }
-  get responseText() {
-    return this.response.clone().text();
-  }
-  get responseHTML() {
-    if (this.isHTML) {
-      return this.response.clone().text();
-    } else {
-      return Promise.resolve(void 0);
-    }
-  }
-  header(name) {
-    return this.response.headers.get(name);
-  }
-};
 var LimitedSet = class extends Set {
   constructor(maxSize) {
     super();
@@ -6638,17 +6528,17 @@ var FormSubmissionState = {
 };
 var FormSubmission = class _FormSubmission {
   state = FormSubmissionState.initialized;
-  static confirmMethod(message) {
+  static confirmMethod(message, _element, _submitter) {
     return Promise.resolve(confirm(message));
   }
-  constructor(delegate, formElement, submitter2, mustRedirect = false) {
-    const method = getMethod(formElement, submitter2);
-    const action = getAction(getFormAction(formElement, submitter2), method);
-    const body = buildFormData(formElement, submitter2);
-    const enctype = getEnctype(formElement, submitter2);
+  constructor(delegate, formElement, submitter, mustRedirect = false) {
+    const method = getMethod(formElement, submitter);
+    const action = getAction(getFormAction(formElement, submitter), method);
+    const body = buildFormData(formElement, submitter);
+    const enctype = getEnctype(formElement, submitter);
     this.delegate = delegate;
     this.formElement = formElement;
-    this.submitter = submitter2;
+    this.submitter = submitter;
     this.fetchRequest = new FetchRequest(this, method, action, body, formElement, enctype);
     this.mustRedirect = mustRedirect;
   }
@@ -6681,8 +6571,7 @@ var FormSubmission = class _FormSubmission {
     const { initialized, requesting } = FormSubmissionState;
     const confirmationMessage = getAttribute("data-turbo-confirm", this.submitter, this.formElement);
     if (typeof confirmationMessage === "string") {
-      const confirmMethod = typeof config.forms.confirm === "function" ? config.forms.confirm : _FormSubmission.confirmMethod;
-      const answer = await confirmMethod(confirmationMessage, this.formElement, this.submitter);
+      const answer = await _FormSubmission.confirmMethod(confirmationMessage, this.formElement, this.submitter);
       if (!answer) {
         return;
       }
@@ -6714,7 +6603,7 @@ var FormSubmission = class _FormSubmission {
   }
   requestStarted(_request) {
     this.state = FormSubmissionState.waiting;
-    if (this.submitter) config.forms.submitter.beforeSubmit(this.submitter);
+    this.submitter?.setAttribute("disabled", "");
     this.setSubmitsWith();
     markAsBusy(this.formElement);
     dispatch("turbo:submit-start", {
@@ -6752,7 +6641,7 @@ var FormSubmission = class _FormSubmission {
   }
   requestFinished(_request) {
     this.state = FormSubmissionState.stopped;
-    if (this.submitter) config.forms.submitter.afterSubmit(this.submitter);
+    this.submitter?.removeAttribute("disabled");
     this.resetSubmitterText();
     clearBusyState(this.formElement);
     dispatch("turbo:submit-end", {
@@ -6792,10 +6681,10 @@ var FormSubmission = class _FormSubmission {
     return this.submitter?.getAttribute("data-turbo-submits-with");
   }
 };
-function buildFormData(formElement, submitter2) {
+function buildFormData(formElement, submitter) {
   const formData = new FormData(formElement);
-  const name = submitter2?.getAttribute("name");
-  const value = submitter2?.getAttribute("value");
+  const name = submitter?.getAttribute("name");
+  const value = submitter?.getAttribute("value");
   if (name) {
     formData.append(name, value || "");
   }
@@ -6814,10 +6703,10 @@ function getCookieValue(cookieName) {
 function responseSucceededWithoutRedirect(response) {
   return response.statusCode == 200 && !response.redirected;
 }
-function getFormAction(formElement, submitter2) {
+function getFormAction(formElement, submitter) {
   const formElementAction = typeof formElement.action === "string" ? formElement.action : null;
-  if (submitter2?.hasAttribute("formaction")) {
-    return submitter2.getAttribute("formaction") || "";
+  if (submitter?.hasAttribute("formaction")) {
+    return submitter.getAttribute("formaction") || "";
   } else {
     return formElement.getAttribute("action") || formElementAction || "";
   }
@@ -6829,12 +6718,12 @@ function getAction(formAction, fetchMethod) {
   }
   return action;
 }
-function getMethod(formElement, submitter2) {
-  const method = submitter2?.getAttribute("formmethod") || formElement.getAttribute("method") || "";
+function getMethod(formElement, submitter) {
+  const method = submitter?.getAttribute("formmethod") || formElement.getAttribute("method") || "";
   return fetchMethodFromString(method.toLowerCase()) || FetchMethod.get;
 }
-function getEnctype(formElement, submitter2) {
-  return fetchEnctypeFromString(submitter2?.getAttribute("formenctype") || formElement.enctype);
+function getEnctype(formElement, submitter) {
+  return fetchEnctypeFromString(submitter?.getAttribute("formenctype") || formElement.enctype);
 }
 var Snapshot = class {
   constructor(element) {
@@ -6907,21 +6796,21 @@ var FormSubmitObserver = class {
   submitBubbled = (event) => {
     if (!event.defaultPrevented) {
       const form = event.target instanceof HTMLFormElement ? event.target : void 0;
-      const submitter2 = event.submitter || void 0;
-      if (form && submissionDoesNotDismissDialog(form, submitter2) && submissionDoesNotTargetIFrame(form, submitter2) && this.delegate.willSubmitForm(form, submitter2)) {
+      const submitter = event.submitter || void 0;
+      if (form && submissionDoesNotDismissDialog(form, submitter) && submissionDoesNotTargetIFrame(form, submitter) && this.delegate.willSubmitForm(form, submitter)) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        this.delegate.formSubmitted(form, submitter2);
+        this.delegate.formSubmitted(form, submitter);
       }
     }
   };
 };
-function submissionDoesNotDismissDialog(form, submitter2) {
-  const method = submitter2?.getAttribute("formmethod") || form.getAttribute("method");
+function submissionDoesNotDismissDialog(form, submitter) {
+  const method = submitter?.getAttribute("formmethod") || form.getAttribute("method");
   return method != "dialog";
 }
-function submissionDoesNotTargetIFrame(form, submitter2) {
-  const target = submitter2?.getAttribute("formtarget") || form.getAttribute("target");
+function submissionDoesNotTargetIFrame(form, submitter) {
+  const target = submitter?.getAttribute("formtarget") || form.getAttribute("target");
   return doesNotTargetIFrame(target);
 }
 var View = class {
@@ -7211,14 +7100,12 @@ function createPlaceholderForPermanentElement(permanentElement) {
 }
 var Renderer = class {
   #activeElement = null;
-  static renderElement(currentElement, newElement) {
-  }
-  constructor(currentSnapshot, newSnapshot, isPreview, willRender = true) {
+  constructor(currentSnapshot, newSnapshot, renderElement, isPreview, willRender = true) {
     this.currentSnapshot = currentSnapshot;
     this.newSnapshot = newSnapshot;
     this.isPreview = isPreview;
     this.willRender = willRender;
-    this.renderElement = this.constructor.renderElement;
+    this.renderElement = renderElement;
     this.promise = new Promise((resolve, reject) => this.resolvingFunctions = { resolve, reject });
   }
   get shouldRender() {
@@ -7351,609 +7238,6 @@ function readScrollBehavior(value, defaultValue) {
     return defaultValue;
   }
 }
-var Idiomorph = /* @__PURE__ */ function() {
-  let EMPTY_SET = /* @__PURE__ */ new Set();
-  let defaults = {
-    morphStyle: "outerHTML",
-    callbacks: {
-      beforeNodeAdded: noOp,
-      afterNodeAdded: noOp,
-      beforeNodeMorphed: noOp,
-      afterNodeMorphed: noOp,
-      beforeNodeRemoved: noOp,
-      afterNodeRemoved: noOp,
-      beforeAttributeUpdated: noOp
-    },
-    head: {
-      style: "merge",
-      shouldPreserve: function(elt) {
-        return elt.getAttribute("im-preserve") === "true";
-      },
-      shouldReAppend: function(elt) {
-        return elt.getAttribute("im-re-append") === "true";
-      },
-      shouldRemove: noOp,
-      afterHeadMorphed: noOp
-    }
-  };
-  function morph(oldNode, newContent, config2 = {}) {
-    if (oldNode instanceof Document) {
-      oldNode = oldNode.documentElement;
-    }
-    if (typeof newContent === "string") {
-      newContent = parseContent(newContent);
-    }
-    let normalizedContent = normalizeContent(newContent);
-    let ctx = createMorphContext(oldNode, normalizedContent, config2);
-    return morphNormalizedContent(oldNode, normalizedContent, ctx);
-  }
-  function morphNormalizedContent(oldNode, normalizedNewContent, ctx) {
-    if (ctx.head.block) {
-      let oldHead = oldNode.querySelector("head");
-      let newHead = normalizedNewContent.querySelector("head");
-      if (oldHead && newHead) {
-        let promises = handleHeadElement(newHead, oldHead, ctx);
-        Promise.all(promises).then(function() {
-          morphNormalizedContent(oldNode, normalizedNewContent, Object.assign(ctx, {
-            head: {
-              block: false,
-              ignore: true
-            }
-          }));
-        });
-        return;
-      }
-    }
-    if (ctx.morphStyle === "innerHTML") {
-      morphChildren2(normalizedNewContent, oldNode, ctx);
-      return oldNode.children;
-    } else if (ctx.morphStyle === "outerHTML" || ctx.morphStyle == null) {
-      let bestMatch = findBestNodeMatch(normalizedNewContent, oldNode, ctx);
-      let previousSibling = bestMatch?.previousSibling;
-      let nextSibling = bestMatch?.nextSibling;
-      let morphedNode = morphOldNodeTo(oldNode, bestMatch, ctx);
-      if (bestMatch) {
-        return insertSiblings(previousSibling, morphedNode, nextSibling);
-      } else {
-        return [];
-      }
-    } else {
-      throw "Do not understand how to morph style " + ctx.morphStyle;
-    }
-  }
-  function ignoreValueOfActiveElement(possibleActiveElement, ctx) {
-    return ctx.ignoreActiveValue && possibleActiveElement === document.activeElement && possibleActiveElement !== document.body;
-  }
-  function morphOldNodeTo(oldNode, newContent, ctx) {
-    if (ctx.ignoreActive && oldNode === document.activeElement) ;
-    else if (newContent == null) {
-      if (ctx.callbacks.beforeNodeRemoved(oldNode) === false) return oldNode;
-      oldNode.remove();
-      ctx.callbacks.afterNodeRemoved(oldNode);
-      return null;
-    } else if (!isSoftMatch(oldNode, newContent)) {
-      if (ctx.callbacks.beforeNodeRemoved(oldNode) === false) return oldNode;
-      if (ctx.callbacks.beforeNodeAdded(newContent) === false) return oldNode;
-      oldNode.parentElement.replaceChild(newContent, oldNode);
-      ctx.callbacks.afterNodeAdded(newContent);
-      ctx.callbacks.afterNodeRemoved(oldNode);
-      return newContent;
-    } else {
-      if (ctx.callbacks.beforeNodeMorphed(oldNode, newContent) === false) return oldNode;
-      if (oldNode instanceof HTMLHeadElement && ctx.head.ignore) ;
-      else if (oldNode instanceof HTMLHeadElement && ctx.head.style !== "morph") {
-        handleHeadElement(newContent, oldNode, ctx);
-      } else {
-        syncNodeFrom(newContent, oldNode, ctx);
-        if (!ignoreValueOfActiveElement(oldNode, ctx)) {
-          morphChildren2(newContent, oldNode, ctx);
-        }
-      }
-      ctx.callbacks.afterNodeMorphed(oldNode, newContent);
-      return oldNode;
-    }
-  }
-  function morphChildren2(newParent, oldParent, ctx) {
-    let nextNewChild = newParent.firstChild;
-    let insertionPoint = oldParent.firstChild;
-    let newChild;
-    while (nextNewChild) {
-      newChild = nextNewChild;
-      nextNewChild = newChild.nextSibling;
-      if (insertionPoint == null) {
-        if (ctx.callbacks.beforeNodeAdded(newChild) === false) return;
-        oldParent.appendChild(newChild);
-        ctx.callbacks.afterNodeAdded(newChild);
-        removeIdsFromConsideration(ctx, newChild);
-        continue;
-      }
-      if (isIdSetMatch(newChild, insertionPoint, ctx)) {
-        morphOldNodeTo(insertionPoint, newChild, ctx);
-        insertionPoint = insertionPoint.nextSibling;
-        removeIdsFromConsideration(ctx, newChild);
-        continue;
-      }
-      let idSetMatch = findIdSetMatch(newParent, oldParent, newChild, insertionPoint, ctx);
-      if (idSetMatch) {
-        insertionPoint = removeNodesBetween(insertionPoint, idSetMatch, ctx);
-        morphOldNodeTo(idSetMatch, newChild, ctx);
-        removeIdsFromConsideration(ctx, newChild);
-        continue;
-      }
-      let softMatch = findSoftMatch(newParent, oldParent, newChild, insertionPoint, ctx);
-      if (softMatch) {
-        insertionPoint = removeNodesBetween(insertionPoint, softMatch, ctx);
-        morphOldNodeTo(softMatch, newChild, ctx);
-        removeIdsFromConsideration(ctx, newChild);
-        continue;
-      }
-      if (ctx.callbacks.beforeNodeAdded(newChild) === false) return;
-      oldParent.insertBefore(newChild, insertionPoint);
-      ctx.callbacks.afterNodeAdded(newChild);
-      removeIdsFromConsideration(ctx, newChild);
-    }
-    while (insertionPoint !== null) {
-      let tempNode = insertionPoint;
-      insertionPoint = insertionPoint.nextSibling;
-      removeNode(tempNode, ctx);
-    }
-  }
-  function ignoreAttribute(attr, to, updateType, ctx) {
-    if (attr === "value" && ctx.ignoreActiveValue && to === document.activeElement) {
-      return true;
-    }
-    return ctx.callbacks.beforeAttributeUpdated(attr, to, updateType) === false;
-  }
-  function syncNodeFrom(from, to, ctx) {
-    let type = from.nodeType;
-    if (type === 1) {
-      const fromAttributes = from.attributes;
-      const toAttributes = to.attributes;
-      for (const fromAttribute of fromAttributes) {
-        if (ignoreAttribute(fromAttribute.name, to, "update", ctx)) {
-          continue;
-        }
-        if (to.getAttribute(fromAttribute.name) !== fromAttribute.value) {
-          to.setAttribute(fromAttribute.name, fromAttribute.value);
-        }
-      }
-      for (let i = toAttributes.length - 1; 0 <= i; i--) {
-        const toAttribute = toAttributes[i];
-        if (ignoreAttribute(toAttribute.name, to, "remove", ctx)) {
-          continue;
-        }
-        if (!from.hasAttribute(toAttribute.name)) {
-          to.removeAttribute(toAttribute.name);
-        }
-      }
-    }
-    if (type === 8 || type === 3) {
-      if (to.nodeValue !== from.nodeValue) {
-        to.nodeValue = from.nodeValue;
-      }
-    }
-    if (!ignoreValueOfActiveElement(to, ctx)) {
-      syncInputValue(from, to, ctx);
-    }
-  }
-  function syncBooleanAttribute(from, to, attributeName, ctx) {
-    if (from[attributeName] !== to[attributeName]) {
-      let ignoreUpdate = ignoreAttribute(attributeName, to, "update", ctx);
-      if (!ignoreUpdate) {
-        to[attributeName] = from[attributeName];
-      }
-      if (from[attributeName]) {
-        if (!ignoreUpdate) {
-          to.setAttribute(attributeName, from[attributeName]);
-        }
-      } else {
-        if (!ignoreAttribute(attributeName, to, "remove", ctx)) {
-          to.removeAttribute(attributeName);
-        }
-      }
-    }
-  }
-  function syncInputValue(from, to, ctx) {
-    if (from instanceof HTMLInputElement && to instanceof HTMLInputElement && from.type !== "file") {
-      let fromValue = from.value;
-      let toValue = to.value;
-      syncBooleanAttribute(from, to, "checked", ctx);
-      syncBooleanAttribute(from, to, "disabled", ctx);
-      if (!from.hasAttribute("value")) {
-        if (!ignoreAttribute("value", to, "remove", ctx)) {
-          to.value = "";
-          to.removeAttribute("value");
-        }
-      } else if (fromValue !== toValue) {
-        if (!ignoreAttribute("value", to, "update", ctx)) {
-          to.setAttribute("value", fromValue);
-          to.value = fromValue;
-        }
-      }
-    } else if (from instanceof HTMLOptionElement) {
-      syncBooleanAttribute(from, to, "selected", ctx);
-    } else if (from instanceof HTMLTextAreaElement && to instanceof HTMLTextAreaElement) {
-      let fromValue = from.value;
-      let toValue = to.value;
-      if (ignoreAttribute("value", to, "update", ctx)) {
-        return;
-      }
-      if (fromValue !== toValue) {
-        to.value = fromValue;
-      }
-      if (to.firstChild && to.firstChild.nodeValue !== fromValue) {
-        to.firstChild.nodeValue = fromValue;
-      }
-    }
-  }
-  function handleHeadElement(newHeadTag, currentHead, ctx) {
-    let added = [];
-    let removed = [];
-    let preserved = [];
-    let nodesToAppend = [];
-    let headMergeStyle = ctx.head.style;
-    let srcToNewHeadNodes = /* @__PURE__ */ new Map();
-    for (const newHeadChild of newHeadTag.children) {
-      srcToNewHeadNodes.set(newHeadChild.outerHTML, newHeadChild);
-    }
-    for (const currentHeadElt of currentHead.children) {
-      let inNewContent = srcToNewHeadNodes.has(currentHeadElt.outerHTML);
-      let isReAppended = ctx.head.shouldReAppend(currentHeadElt);
-      let isPreserved = ctx.head.shouldPreserve(currentHeadElt);
-      if (inNewContent || isPreserved) {
-        if (isReAppended) {
-          removed.push(currentHeadElt);
-        } else {
-          srcToNewHeadNodes.delete(currentHeadElt.outerHTML);
-          preserved.push(currentHeadElt);
-        }
-      } else {
-        if (headMergeStyle === "append") {
-          if (isReAppended) {
-            removed.push(currentHeadElt);
-            nodesToAppend.push(currentHeadElt);
-          }
-        } else {
-          if (ctx.head.shouldRemove(currentHeadElt) !== false) {
-            removed.push(currentHeadElt);
-          }
-        }
-      }
-    }
-    nodesToAppend.push(...srcToNewHeadNodes.values());
-    let promises = [];
-    for (const newNode of nodesToAppend) {
-      let newElt = document.createRange().createContextualFragment(newNode.outerHTML).firstChild;
-      if (ctx.callbacks.beforeNodeAdded(newElt) !== false) {
-        if (newElt.href || newElt.src) {
-          let resolve = null;
-          let promise = new Promise(function(_resolve) {
-            resolve = _resolve;
-          });
-          newElt.addEventListener("load", function() {
-            resolve();
-          });
-          promises.push(promise);
-        }
-        currentHead.appendChild(newElt);
-        ctx.callbacks.afterNodeAdded(newElt);
-        added.push(newElt);
-      }
-    }
-    for (const removedElement of removed) {
-      if (ctx.callbacks.beforeNodeRemoved(removedElement) !== false) {
-        currentHead.removeChild(removedElement);
-        ctx.callbacks.afterNodeRemoved(removedElement);
-      }
-    }
-    ctx.head.afterHeadMorphed(currentHead, { added, kept: preserved, removed });
-    return promises;
-  }
-  function noOp() {
-  }
-  function mergeDefaults(config2) {
-    let finalConfig = {};
-    Object.assign(finalConfig, defaults);
-    Object.assign(finalConfig, config2);
-    finalConfig.callbacks = {};
-    Object.assign(finalConfig.callbacks, defaults.callbacks);
-    Object.assign(finalConfig.callbacks, config2.callbacks);
-    finalConfig.head = {};
-    Object.assign(finalConfig.head, defaults.head);
-    Object.assign(finalConfig.head, config2.head);
-    return finalConfig;
-  }
-  function createMorphContext(oldNode, newContent, config2) {
-    config2 = mergeDefaults(config2);
-    return {
-      target: oldNode,
-      newContent,
-      config: config2,
-      morphStyle: config2.morphStyle,
-      ignoreActive: config2.ignoreActive,
-      ignoreActiveValue: config2.ignoreActiveValue,
-      idMap: createIdMap(oldNode, newContent),
-      deadIds: /* @__PURE__ */ new Set(),
-      callbacks: config2.callbacks,
-      head: config2.head
-    };
-  }
-  function isIdSetMatch(node1, node2, ctx) {
-    if (node1 == null || node2 == null) {
-      return false;
-    }
-    if (node1.nodeType === node2.nodeType && node1.tagName === node2.tagName) {
-      if (node1.id !== "" && node1.id === node2.id) {
-        return true;
-      } else {
-        return getIdIntersectionCount(ctx, node1, node2) > 0;
-      }
-    }
-    return false;
-  }
-  function isSoftMatch(node1, node2) {
-    if (node1 == null || node2 == null) {
-      return false;
-    }
-    return node1.nodeType === node2.nodeType && node1.tagName === node2.tagName;
-  }
-  function removeNodesBetween(startInclusive, endExclusive, ctx) {
-    while (startInclusive !== endExclusive) {
-      let tempNode = startInclusive;
-      startInclusive = startInclusive.nextSibling;
-      removeNode(tempNode, ctx);
-    }
-    removeIdsFromConsideration(ctx, endExclusive);
-    return endExclusive.nextSibling;
-  }
-  function findIdSetMatch(newContent, oldParent, newChild, insertionPoint, ctx) {
-    let newChildPotentialIdCount = getIdIntersectionCount(ctx, newChild, oldParent);
-    let potentialMatch = null;
-    if (newChildPotentialIdCount > 0) {
-      let potentialMatch2 = insertionPoint;
-      let otherMatchCount = 0;
-      while (potentialMatch2 != null) {
-        if (isIdSetMatch(newChild, potentialMatch2, ctx)) {
-          return potentialMatch2;
-        }
-        otherMatchCount += getIdIntersectionCount(ctx, potentialMatch2, newContent);
-        if (otherMatchCount > newChildPotentialIdCount) {
-          return null;
-        }
-        potentialMatch2 = potentialMatch2.nextSibling;
-      }
-    }
-    return potentialMatch;
-  }
-  function findSoftMatch(newContent, oldParent, newChild, insertionPoint, ctx) {
-    let potentialSoftMatch = insertionPoint;
-    let nextSibling = newChild.nextSibling;
-    let siblingSoftMatchCount = 0;
-    while (potentialSoftMatch != null) {
-      if (getIdIntersectionCount(ctx, potentialSoftMatch, newContent) > 0) {
-        return null;
-      }
-      if (isSoftMatch(newChild, potentialSoftMatch)) {
-        return potentialSoftMatch;
-      }
-      if (isSoftMatch(nextSibling, potentialSoftMatch)) {
-        siblingSoftMatchCount++;
-        nextSibling = nextSibling.nextSibling;
-        if (siblingSoftMatchCount >= 2) {
-          return null;
-        }
-      }
-      potentialSoftMatch = potentialSoftMatch.nextSibling;
-    }
-    return potentialSoftMatch;
-  }
-  function parseContent(newContent) {
-    let parser = new DOMParser();
-    let contentWithSvgsRemoved = newContent.replace(/<svg(\s[^>]*>|>)([\s\S]*?)<\/svg>/gim, "");
-    if (contentWithSvgsRemoved.match(/<\/html>/) || contentWithSvgsRemoved.match(/<\/head>/) || contentWithSvgsRemoved.match(/<\/body>/)) {
-      let content = parser.parseFromString(newContent, "text/html");
-      if (contentWithSvgsRemoved.match(/<\/html>/)) {
-        content.generatedByIdiomorph = true;
-        return content;
-      } else {
-        let htmlElement = content.firstChild;
-        if (htmlElement) {
-          htmlElement.generatedByIdiomorph = true;
-          return htmlElement;
-        } else {
-          return null;
-        }
-      }
-    } else {
-      let responseDoc = parser.parseFromString("<body><template>" + newContent + "</template></body>", "text/html");
-      let content = responseDoc.body.querySelector("template").content;
-      content.generatedByIdiomorph = true;
-      return content;
-    }
-  }
-  function normalizeContent(newContent) {
-    if (newContent == null) {
-      const dummyParent = document.createElement("div");
-      return dummyParent;
-    } else if (newContent.generatedByIdiomorph) {
-      return newContent;
-    } else if (newContent instanceof Node) {
-      const dummyParent = document.createElement("div");
-      dummyParent.append(newContent);
-      return dummyParent;
-    } else {
-      const dummyParent = document.createElement("div");
-      for (const elt of [...newContent]) {
-        dummyParent.append(elt);
-      }
-      return dummyParent;
-    }
-  }
-  function insertSiblings(previousSibling, morphedNode, nextSibling) {
-    let stack = [];
-    let added = [];
-    while (previousSibling != null) {
-      stack.push(previousSibling);
-      previousSibling = previousSibling.previousSibling;
-    }
-    while (stack.length > 0) {
-      let node = stack.pop();
-      added.push(node);
-      morphedNode.parentElement.insertBefore(node, morphedNode);
-    }
-    added.push(morphedNode);
-    while (nextSibling != null) {
-      stack.push(nextSibling);
-      added.push(nextSibling);
-      nextSibling = nextSibling.nextSibling;
-    }
-    while (stack.length > 0) {
-      morphedNode.parentElement.insertBefore(stack.pop(), morphedNode.nextSibling);
-    }
-    return added;
-  }
-  function findBestNodeMatch(newContent, oldNode, ctx) {
-    let currentElement;
-    currentElement = newContent.firstChild;
-    let bestElement = currentElement;
-    let score = 0;
-    while (currentElement) {
-      let newScore = scoreElement(currentElement, oldNode, ctx);
-      if (newScore > score) {
-        bestElement = currentElement;
-        score = newScore;
-      }
-      currentElement = currentElement.nextSibling;
-    }
-    return bestElement;
-  }
-  function scoreElement(node1, node2, ctx) {
-    if (isSoftMatch(node1, node2)) {
-      return 0.5 + getIdIntersectionCount(ctx, node1, node2);
-    }
-    return 0;
-  }
-  function removeNode(tempNode, ctx) {
-    removeIdsFromConsideration(ctx, tempNode);
-    if (ctx.callbacks.beforeNodeRemoved(tempNode) === false) return;
-    tempNode.remove();
-    ctx.callbacks.afterNodeRemoved(tempNode);
-  }
-  function isIdInConsideration(ctx, id) {
-    return !ctx.deadIds.has(id);
-  }
-  function idIsWithinNode(ctx, id, targetNode) {
-    let idSet = ctx.idMap.get(targetNode) || EMPTY_SET;
-    return idSet.has(id);
-  }
-  function removeIdsFromConsideration(ctx, node) {
-    let idSet = ctx.idMap.get(node) || EMPTY_SET;
-    for (const id of idSet) {
-      ctx.deadIds.add(id);
-    }
-  }
-  function getIdIntersectionCount(ctx, node1, node2) {
-    let sourceSet = ctx.idMap.get(node1) || EMPTY_SET;
-    let matchCount = 0;
-    for (const id of sourceSet) {
-      if (isIdInConsideration(ctx, id) && idIsWithinNode(ctx, id, node2)) {
-        ++matchCount;
-      }
-    }
-    return matchCount;
-  }
-  function populateIdMapForNode(node, idMap) {
-    let nodeParent = node.parentElement;
-    let idElements = node.querySelectorAll("[id]");
-    for (const elt of idElements) {
-      let current = elt;
-      while (current !== nodeParent && current != null) {
-        let idSet = idMap.get(current);
-        if (idSet == null) {
-          idSet = /* @__PURE__ */ new Set();
-          idMap.set(current, idSet);
-        }
-        idSet.add(elt.id);
-        current = current.parentElement;
-      }
-    }
-  }
-  function createIdMap(oldContent, newContent) {
-    let idMap = /* @__PURE__ */ new Map();
-    populateIdMapForNode(oldContent, idMap);
-    populateIdMapForNode(newContent, idMap);
-    return idMap;
-  }
-  return {
-    morph,
-    defaults
-  };
-}();
-function morphElements(currentElement, newElement, { callbacks, ...options } = {}) {
-  Idiomorph.morph(currentElement, newElement, {
-    ...options,
-    callbacks: new DefaultIdiomorphCallbacks(callbacks)
-  });
-}
-function morphChildren(currentElement, newElement) {
-  morphElements(currentElement, newElement.children, {
-    morphStyle: "innerHTML"
-  });
-}
-var DefaultIdiomorphCallbacks = class {
-  #beforeNodeMorphed;
-  constructor({ beforeNodeMorphed } = {}) {
-    this.#beforeNodeMorphed = beforeNodeMorphed || (() => true);
-  }
-  beforeNodeAdded = (node) => {
-    return !(node.id && node.hasAttribute("data-turbo-permanent") && document.getElementById(node.id));
-  };
-  beforeNodeMorphed = (currentElement, newElement) => {
-    if (currentElement instanceof Element) {
-      if (!currentElement.hasAttribute("data-turbo-permanent") && this.#beforeNodeMorphed(currentElement, newElement)) {
-        const event = dispatch("turbo:before-morph-element", {
-          cancelable: true,
-          target: currentElement,
-          detail: { currentElement, newElement }
-        });
-        return !event.defaultPrevented;
-      } else {
-        return false;
-      }
-    }
-  };
-  beforeAttributeUpdated = (attributeName, target, mutationType) => {
-    const event = dispatch("turbo:before-morph-attribute", {
-      cancelable: true,
-      target,
-      detail: { attributeName, mutationType }
-    });
-    return !event.defaultPrevented;
-  };
-  beforeNodeRemoved = (node) => {
-    return this.beforeNodeMorphed(node);
-  };
-  afterNodeMorphed = (currentElement, newElement) => {
-    if (currentElement instanceof Element) {
-      dispatch("turbo:morph-element", {
-        target: currentElement,
-        detail: { currentElement, newElement }
-      });
-    }
-  };
-};
-var MorphingFrameRenderer = class extends FrameRenderer {
-  static renderElement(currentElement, newElement) {
-    dispatch("turbo:before-frame-morph", {
-      target: currentElement,
-      detail: { currentElement, newElement }
-    });
-    morphChildren(currentElement, newElement);
-  }
-  async preservingPermanentElements(callback) {
-    return await callback();
-  }
-};
 var ProgressBar = class _ProgressBar {
   static animationDuration = 300;
   /*ms*/
@@ -8045,9 +7329,8 @@ var ProgressBar = class _ProgressBar {
     const element = document.createElement("style");
     element.type = "text/css";
     element.textContent = _ProgressBar.defaultCSS;
-    const cspNonce = getCspNonce();
-    if (cspNonce) {
-      element.nonce = cspNonce;
+    if (this.cspNonce) {
+      element.nonce = this.cspNonce;
     }
     return element;
   }
@@ -8055,6 +7338,9 @@ var ProgressBar = class _ProgressBar {
     const element = document.createElement("div");
     element.className = "turbo-progress-bar";
     return element;
+  }
+  get cspNonce() {
+    return getMetaContent("csp-nonce");
   }
 };
 var HeadSnapshot = class extends Snapshot {
@@ -8584,9 +7870,7 @@ var Visit = class {
   }
   async render(callback) {
     this.cancelRender();
-    await new Promise((resolve) => {
-      this.frame = document.visibilityState === "hidden" ? setTimeout(() => resolve(), 0) : requestAnimationFrame(() => resolve());
-    });
+    this.frame = await nextRepaint();
     await callback();
     delete this.frame;
   }
@@ -8768,32 +8052,32 @@ var FrameRedirector = class {
     }
   }
   // Form submit observer delegate
-  willSubmitForm(element, submitter2) {
-    return element.closest("turbo-frame") == null && this.#shouldSubmit(element, submitter2) && this.#shouldRedirect(element, submitter2);
+  willSubmitForm(element, submitter) {
+    return element.closest("turbo-frame") == null && this.#shouldSubmit(element, submitter) && this.#shouldRedirect(element, submitter);
   }
-  formSubmitted(element, submitter2) {
-    const frame = this.#findFrameElement(element, submitter2);
+  formSubmitted(element, submitter) {
+    const frame = this.#findFrameElement(element, submitter);
     if (frame) {
-      frame.delegate.formSubmitted(element, submitter2);
+      frame.delegate.formSubmitted(element, submitter);
     }
   }
-  #shouldSubmit(form, submitter2) {
-    const action = getAction$1(form, submitter2);
+  #shouldSubmit(form, submitter) {
+    const action = getAction$1(form, submitter);
     const meta = this.element.ownerDocument.querySelector(`meta[name="turbo-root"]`);
     const rootLocation = expandURL(meta?.content ?? "/");
-    return this.#shouldRedirect(form, submitter2) && locationIsVisitable(action, rootLocation);
+    return this.#shouldRedirect(form, submitter) && locationIsVisitable(action, rootLocation);
   }
-  #shouldRedirect(element, submitter2) {
-    const isNavigatable = element instanceof HTMLFormElement ? this.session.submissionIsNavigatable(element, submitter2) : this.session.elementIsNavigatable(element);
+  #shouldRedirect(element, submitter) {
+    const isNavigatable = element instanceof HTMLFormElement ? this.session.submissionIsNavigatable(element, submitter) : this.session.elementIsNavigatable(element);
     if (isNavigatable) {
-      const frame = this.#findFrameElement(element, submitter2);
+      const frame = this.#findFrameElement(element, submitter);
       return frame ? frame != element.closest("turbo-frame") : false;
     } else {
       return false;
     }
   }
-  #findFrameElement(element, submitter2) {
-    const id = submitter2?.getAttribute("data-turbo-frame") || element.getAttribute("data-turbo-frame");
+  #findFrameElement(element, submitter) {
+    const id = submitter?.getAttribute("data-turbo-frame") || element.getAttribute("data-turbo-frame");
     if (id && id != "_top") {
       const frame = this.element.querySelector(`#${id}:not([disabled])`);
       if (frame instanceof FrameElement) {
@@ -9049,9 +8333,9 @@ var Navigator = class {
     });
     this.currentVisit.start();
   }
-  submitForm(form, submitter2) {
+  submitForm(form, submitter) {
     this.stop();
-    this.formSubmission = new FormSubmission(this, form, submitter2, true);
+    this.formSubmission = new FormSubmission(this, form, submitter, true);
     this.formSubmission.start();
   }
   stop() {
@@ -9149,8 +8433,8 @@ var Navigator = class {
     return this.history.restorationIdentifier;
   }
   #getActionForFormSubmission(formSubmission, fetchResponse) {
-    const { submitter: submitter2, formElement } = formSubmission;
-    return getVisitAction(submitter2, formElement) || this.#getDefaultAction(fetchResponse);
+    const { submitter, formElement } = formSubmission;
+    return getVisitAction(submitter, formElement) || this.#getDefaultAction(fetchResponse);
   }
   #getDefaultAction(fetchResponse) {
     const sameLocationRedirect = fetchResponse.redirected && fetchResponse.location.href === this.location?.href;
@@ -9409,6 +8693,606 @@ var ErrorRenderer = class extends Renderer {
     return document.documentElement.querySelectorAll("script");
   }
 };
+var Idiomorph = /* @__PURE__ */ function() {
+  let EMPTY_SET = /* @__PURE__ */ new Set();
+  let defaults = {
+    morphStyle: "outerHTML",
+    callbacks: {
+      beforeNodeAdded: noOp,
+      afterNodeAdded: noOp,
+      beforeNodeMorphed: noOp,
+      afterNodeMorphed: noOp,
+      beforeNodeRemoved: noOp,
+      afterNodeRemoved: noOp,
+      beforeAttributeUpdated: noOp
+    },
+    head: {
+      style: "merge",
+      shouldPreserve: function(elt) {
+        return elt.getAttribute("im-preserve") === "true";
+      },
+      shouldReAppend: function(elt) {
+        return elt.getAttribute("im-re-append") === "true";
+      },
+      shouldRemove: noOp,
+      afterHeadMorphed: noOp
+    }
+  };
+  function morph(oldNode, newContent, config = {}) {
+    if (oldNode instanceof Document) {
+      oldNode = oldNode.documentElement;
+    }
+    if (typeof newContent === "string") {
+      newContent = parseContent(newContent);
+    }
+    let normalizedContent = normalizeContent(newContent);
+    let ctx = createMorphContext(oldNode, normalizedContent, config);
+    return morphNormalizedContent(oldNode, normalizedContent, ctx);
+  }
+  function morphNormalizedContent(oldNode, normalizedNewContent, ctx) {
+    if (ctx.head.block) {
+      let oldHead = oldNode.querySelector("head");
+      let newHead = normalizedNewContent.querySelector("head");
+      if (oldHead && newHead) {
+        let promises = handleHeadElement(newHead, oldHead, ctx);
+        Promise.all(promises).then(function() {
+          morphNormalizedContent(oldNode, normalizedNewContent, Object.assign(ctx, {
+            head: {
+              block: false,
+              ignore: true
+            }
+          }));
+        });
+        return;
+      }
+    }
+    if (ctx.morphStyle === "innerHTML") {
+      morphChildren2(normalizedNewContent, oldNode, ctx);
+      return oldNode.children;
+    } else if (ctx.morphStyle === "outerHTML" || ctx.morphStyle == null) {
+      let bestMatch = findBestNodeMatch(normalizedNewContent, oldNode, ctx);
+      let previousSibling = bestMatch?.previousSibling;
+      let nextSibling = bestMatch?.nextSibling;
+      let morphedNode = morphOldNodeTo(oldNode, bestMatch, ctx);
+      if (bestMatch) {
+        return insertSiblings(previousSibling, morphedNode, nextSibling);
+      } else {
+        return [];
+      }
+    } else {
+      throw "Do not understand how to morph style " + ctx.morphStyle;
+    }
+  }
+  function ignoreValueOfActiveElement(possibleActiveElement, ctx) {
+    return ctx.ignoreActiveValue && possibleActiveElement === document.activeElement && possibleActiveElement !== document.body;
+  }
+  function morphOldNodeTo(oldNode, newContent, ctx) {
+    if (ctx.ignoreActive && oldNode === document.activeElement) ;
+    else if (newContent == null) {
+      if (ctx.callbacks.beforeNodeRemoved(oldNode) === false) return oldNode;
+      oldNode.remove();
+      ctx.callbacks.afterNodeRemoved(oldNode);
+      return null;
+    } else if (!isSoftMatch(oldNode, newContent)) {
+      if (ctx.callbacks.beforeNodeRemoved(oldNode) === false) return oldNode;
+      if (ctx.callbacks.beforeNodeAdded(newContent) === false) return oldNode;
+      oldNode.parentElement.replaceChild(newContent, oldNode);
+      ctx.callbacks.afterNodeAdded(newContent);
+      ctx.callbacks.afterNodeRemoved(oldNode);
+      return newContent;
+    } else {
+      if (ctx.callbacks.beforeNodeMorphed(oldNode, newContent) === false) return oldNode;
+      if (oldNode instanceof HTMLHeadElement && ctx.head.ignore) ;
+      else if (oldNode instanceof HTMLHeadElement && ctx.head.style !== "morph") {
+        handleHeadElement(newContent, oldNode, ctx);
+      } else {
+        syncNodeFrom(newContent, oldNode, ctx);
+        if (!ignoreValueOfActiveElement(oldNode, ctx)) {
+          morphChildren2(newContent, oldNode, ctx);
+        }
+      }
+      ctx.callbacks.afterNodeMorphed(oldNode, newContent);
+      return oldNode;
+    }
+  }
+  function morphChildren2(newParent, oldParent, ctx) {
+    let nextNewChild = newParent.firstChild;
+    let insertionPoint = oldParent.firstChild;
+    let newChild;
+    while (nextNewChild) {
+      newChild = nextNewChild;
+      nextNewChild = newChild.nextSibling;
+      if (insertionPoint == null) {
+        if (ctx.callbacks.beforeNodeAdded(newChild) === false) return;
+        oldParent.appendChild(newChild);
+        ctx.callbacks.afterNodeAdded(newChild);
+        removeIdsFromConsideration(ctx, newChild);
+        continue;
+      }
+      if (isIdSetMatch(newChild, insertionPoint, ctx)) {
+        morphOldNodeTo(insertionPoint, newChild, ctx);
+        insertionPoint = insertionPoint.nextSibling;
+        removeIdsFromConsideration(ctx, newChild);
+        continue;
+      }
+      let idSetMatch = findIdSetMatch(newParent, oldParent, newChild, insertionPoint, ctx);
+      if (idSetMatch) {
+        insertionPoint = removeNodesBetween(insertionPoint, idSetMatch, ctx);
+        morphOldNodeTo(idSetMatch, newChild, ctx);
+        removeIdsFromConsideration(ctx, newChild);
+        continue;
+      }
+      let softMatch = findSoftMatch(newParent, oldParent, newChild, insertionPoint, ctx);
+      if (softMatch) {
+        insertionPoint = removeNodesBetween(insertionPoint, softMatch, ctx);
+        morphOldNodeTo(softMatch, newChild, ctx);
+        removeIdsFromConsideration(ctx, newChild);
+        continue;
+      }
+      if (ctx.callbacks.beforeNodeAdded(newChild) === false) return;
+      oldParent.insertBefore(newChild, insertionPoint);
+      ctx.callbacks.afterNodeAdded(newChild);
+      removeIdsFromConsideration(ctx, newChild);
+    }
+    while (insertionPoint !== null) {
+      let tempNode = insertionPoint;
+      insertionPoint = insertionPoint.nextSibling;
+      removeNode(tempNode, ctx);
+    }
+  }
+  function ignoreAttribute(attr, to, updateType, ctx) {
+    if (attr === "value" && ctx.ignoreActiveValue && to === document.activeElement) {
+      return true;
+    }
+    return ctx.callbacks.beforeAttributeUpdated(attr, to, updateType) === false;
+  }
+  function syncNodeFrom(from, to, ctx) {
+    let type = from.nodeType;
+    if (type === 1) {
+      const fromAttributes = from.attributes;
+      const toAttributes = to.attributes;
+      for (const fromAttribute of fromAttributes) {
+        if (ignoreAttribute(fromAttribute.name, to, "update", ctx)) {
+          continue;
+        }
+        if (to.getAttribute(fromAttribute.name) !== fromAttribute.value) {
+          to.setAttribute(fromAttribute.name, fromAttribute.value);
+        }
+      }
+      for (let i = toAttributes.length - 1; 0 <= i; i--) {
+        const toAttribute = toAttributes[i];
+        if (ignoreAttribute(toAttribute.name, to, "remove", ctx)) {
+          continue;
+        }
+        if (!from.hasAttribute(toAttribute.name)) {
+          to.removeAttribute(toAttribute.name);
+        }
+      }
+    }
+    if (type === 8 || type === 3) {
+      if (to.nodeValue !== from.nodeValue) {
+        to.nodeValue = from.nodeValue;
+      }
+    }
+    if (!ignoreValueOfActiveElement(to, ctx)) {
+      syncInputValue(from, to, ctx);
+    }
+  }
+  function syncBooleanAttribute(from, to, attributeName, ctx) {
+    if (from[attributeName] !== to[attributeName]) {
+      let ignoreUpdate = ignoreAttribute(attributeName, to, "update", ctx);
+      if (!ignoreUpdate) {
+        to[attributeName] = from[attributeName];
+      }
+      if (from[attributeName]) {
+        if (!ignoreUpdate) {
+          to.setAttribute(attributeName, from[attributeName]);
+        }
+      } else {
+        if (!ignoreAttribute(attributeName, to, "remove", ctx)) {
+          to.removeAttribute(attributeName);
+        }
+      }
+    }
+  }
+  function syncInputValue(from, to, ctx) {
+    if (from instanceof HTMLInputElement && to instanceof HTMLInputElement && from.type !== "file") {
+      let fromValue = from.value;
+      let toValue = to.value;
+      syncBooleanAttribute(from, to, "checked", ctx);
+      syncBooleanAttribute(from, to, "disabled", ctx);
+      if (!from.hasAttribute("value")) {
+        if (!ignoreAttribute("value", to, "remove", ctx)) {
+          to.value = "";
+          to.removeAttribute("value");
+        }
+      } else if (fromValue !== toValue) {
+        if (!ignoreAttribute("value", to, "update", ctx)) {
+          to.setAttribute("value", fromValue);
+          to.value = fromValue;
+        }
+      }
+    } else if (from instanceof HTMLOptionElement) {
+      syncBooleanAttribute(from, to, "selected", ctx);
+    } else if (from instanceof HTMLTextAreaElement && to instanceof HTMLTextAreaElement) {
+      let fromValue = from.value;
+      let toValue = to.value;
+      if (ignoreAttribute("value", to, "update", ctx)) {
+        return;
+      }
+      if (fromValue !== toValue) {
+        to.value = fromValue;
+      }
+      if (to.firstChild && to.firstChild.nodeValue !== fromValue) {
+        to.firstChild.nodeValue = fromValue;
+      }
+    }
+  }
+  function handleHeadElement(newHeadTag, currentHead, ctx) {
+    let added = [];
+    let removed = [];
+    let preserved = [];
+    let nodesToAppend = [];
+    let headMergeStyle = ctx.head.style;
+    let srcToNewHeadNodes = /* @__PURE__ */ new Map();
+    for (const newHeadChild of newHeadTag.children) {
+      srcToNewHeadNodes.set(newHeadChild.outerHTML, newHeadChild);
+    }
+    for (const currentHeadElt of currentHead.children) {
+      let inNewContent = srcToNewHeadNodes.has(currentHeadElt.outerHTML);
+      let isReAppended = ctx.head.shouldReAppend(currentHeadElt);
+      let isPreserved = ctx.head.shouldPreserve(currentHeadElt);
+      if (inNewContent || isPreserved) {
+        if (isReAppended) {
+          removed.push(currentHeadElt);
+        } else {
+          srcToNewHeadNodes.delete(currentHeadElt.outerHTML);
+          preserved.push(currentHeadElt);
+        }
+      } else {
+        if (headMergeStyle === "append") {
+          if (isReAppended) {
+            removed.push(currentHeadElt);
+            nodesToAppend.push(currentHeadElt);
+          }
+        } else {
+          if (ctx.head.shouldRemove(currentHeadElt) !== false) {
+            removed.push(currentHeadElt);
+          }
+        }
+      }
+    }
+    nodesToAppend.push(...srcToNewHeadNodes.values());
+    let promises = [];
+    for (const newNode of nodesToAppend) {
+      let newElt = document.createRange().createContextualFragment(newNode.outerHTML).firstChild;
+      if (ctx.callbacks.beforeNodeAdded(newElt) !== false) {
+        if (newElt.href || newElt.src) {
+          let resolve = null;
+          let promise = new Promise(function(_resolve) {
+            resolve = _resolve;
+          });
+          newElt.addEventListener("load", function() {
+            resolve();
+          });
+          promises.push(promise);
+        }
+        currentHead.appendChild(newElt);
+        ctx.callbacks.afterNodeAdded(newElt);
+        added.push(newElt);
+      }
+    }
+    for (const removedElement of removed) {
+      if (ctx.callbacks.beforeNodeRemoved(removedElement) !== false) {
+        currentHead.removeChild(removedElement);
+        ctx.callbacks.afterNodeRemoved(removedElement);
+      }
+    }
+    ctx.head.afterHeadMorphed(currentHead, { added, kept: preserved, removed });
+    return promises;
+  }
+  function noOp() {
+  }
+  function mergeDefaults(config) {
+    let finalConfig = {};
+    Object.assign(finalConfig, defaults);
+    Object.assign(finalConfig, config);
+    finalConfig.callbacks = {};
+    Object.assign(finalConfig.callbacks, defaults.callbacks);
+    Object.assign(finalConfig.callbacks, config.callbacks);
+    finalConfig.head = {};
+    Object.assign(finalConfig.head, defaults.head);
+    Object.assign(finalConfig.head, config.head);
+    return finalConfig;
+  }
+  function createMorphContext(oldNode, newContent, config) {
+    config = mergeDefaults(config);
+    return {
+      target: oldNode,
+      newContent,
+      config,
+      morphStyle: config.morphStyle,
+      ignoreActive: config.ignoreActive,
+      ignoreActiveValue: config.ignoreActiveValue,
+      idMap: createIdMap(oldNode, newContent),
+      deadIds: /* @__PURE__ */ new Set(),
+      callbacks: config.callbacks,
+      head: config.head
+    };
+  }
+  function isIdSetMatch(node1, node2, ctx) {
+    if (node1 == null || node2 == null) {
+      return false;
+    }
+    if (node1.nodeType === node2.nodeType && node1.tagName === node2.tagName) {
+      if (node1.id !== "" && node1.id === node2.id) {
+        return true;
+      } else {
+        return getIdIntersectionCount(ctx, node1, node2) > 0;
+      }
+    }
+    return false;
+  }
+  function isSoftMatch(node1, node2) {
+    if (node1 == null || node2 == null) {
+      return false;
+    }
+    return node1.nodeType === node2.nodeType && node1.tagName === node2.tagName;
+  }
+  function removeNodesBetween(startInclusive, endExclusive, ctx) {
+    while (startInclusive !== endExclusive) {
+      let tempNode = startInclusive;
+      startInclusive = startInclusive.nextSibling;
+      removeNode(tempNode, ctx);
+    }
+    removeIdsFromConsideration(ctx, endExclusive);
+    return endExclusive.nextSibling;
+  }
+  function findIdSetMatch(newContent, oldParent, newChild, insertionPoint, ctx) {
+    let newChildPotentialIdCount = getIdIntersectionCount(ctx, newChild, oldParent);
+    let potentialMatch = null;
+    if (newChildPotentialIdCount > 0) {
+      let potentialMatch2 = insertionPoint;
+      let otherMatchCount = 0;
+      while (potentialMatch2 != null) {
+        if (isIdSetMatch(newChild, potentialMatch2, ctx)) {
+          return potentialMatch2;
+        }
+        otherMatchCount += getIdIntersectionCount(ctx, potentialMatch2, newContent);
+        if (otherMatchCount > newChildPotentialIdCount) {
+          return null;
+        }
+        potentialMatch2 = potentialMatch2.nextSibling;
+      }
+    }
+    return potentialMatch;
+  }
+  function findSoftMatch(newContent, oldParent, newChild, insertionPoint, ctx) {
+    let potentialSoftMatch = insertionPoint;
+    let nextSibling = newChild.nextSibling;
+    let siblingSoftMatchCount = 0;
+    while (potentialSoftMatch != null) {
+      if (getIdIntersectionCount(ctx, potentialSoftMatch, newContent) > 0) {
+        return null;
+      }
+      if (isSoftMatch(newChild, potentialSoftMatch)) {
+        return potentialSoftMatch;
+      }
+      if (isSoftMatch(nextSibling, potentialSoftMatch)) {
+        siblingSoftMatchCount++;
+        nextSibling = nextSibling.nextSibling;
+        if (siblingSoftMatchCount >= 2) {
+          return null;
+        }
+      }
+      potentialSoftMatch = potentialSoftMatch.nextSibling;
+    }
+    return potentialSoftMatch;
+  }
+  function parseContent(newContent) {
+    let parser = new DOMParser();
+    let contentWithSvgsRemoved = newContent.replace(/<svg(\s[^>]*>|>)([\s\S]*?)<\/svg>/gim, "");
+    if (contentWithSvgsRemoved.match(/<\/html>/) || contentWithSvgsRemoved.match(/<\/head>/) || contentWithSvgsRemoved.match(/<\/body>/)) {
+      let content = parser.parseFromString(newContent, "text/html");
+      if (contentWithSvgsRemoved.match(/<\/html>/)) {
+        content.generatedByIdiomorph = true;
+        return content;
+      } else {
+        let htmlElement = content.firstChild;
+        if (htmlElement) {
+          htmlElement.generatedByIdiomorph = true;
+          return htmlElement;
+        } else {
+          return null;
+        }
+      }
+    } else {
+      let responseDoc = parser.parseFromString("<body><template>" + newContent + "</template></body>", "text/html");
+      let content = responseDoc.body.querySelector("template").content;
+      content.generatedByIdiomorph = true;
+      return content;
+    }
+  }
+  function normalizeContent(newContent) {
+    if (newContent == null) {
+      const dummyParent = document.createElement("div");
+      return dummyParent;
+    } else if (newContent.generatedByIdiomorph) {
+      return newContent;
+    } else if (newContent instanceof Node) {
+      const dummyParent = document.createElement("div");
+      dummyParent.append(newContent);
+      return dummyParent;
+    } else {
+      const dummyParent = document.createElement("div");
+      for (const elt of [...newContent]) {
+        dummyParent.append(elt);
+      }
+      return dummyParent;
+    }
+  }
+  function insertSiblings(previousSibling, morphedNode, nextSibling) {
+    let stack = [];
+    let added = [];
+    while (previousSibling != null) {
+      stack.push(previousSibling);
+      previousSibling = previousSibling.previousSibling;
+    }
+    while (stack.length > 0) {
+      let node = stack.pop();
+      added.push(node);
+      morphedNode.parentElement.insertBefore(node, morphedNode);
+    }
+    added.push(morphedNode);
+    while (nextSibling != null) {
+      stack.push(nextSibling);
+      added.push(nextSibling);
+      nextSibling = nextSibling.nextSibling;
+    }
+    while (stack.length > 0) {
+      morphedNode.parentElement.insertBefore(stack.pop(), morphedNode.nextSibling);
+    }
+    return added;
+  }
+  function findBestNodeMatch(newContent, oldNode, ctx) {
+    let currentElement;
+    currentElement = newContent.firstChild;
+    let bestElement = currentElement;
+    let score = 0;
+    while (currentElement) {
+      let newScore = scoreElement(currentElement, oldNode, ctx);
+      if (newScore > score) {
+        bestElement = currentElement;
+        score = newScore;
+      }
+      currentElement = currentElement.nextSibling;
+    }
+    return bestElement;
+  }
+  function scoreElement(node1, node2, ctx) {
+    if (isSoftMatch(node1, node2)) {
+      return 0.5 + getIdIntersectionCount(ctx, node1, node2);
+    }
+    return 0;
+  }
+  function removeNode(tempNode, ctx) {
+    removeIdsFromConsideration(ctx, tempNode);
+    if (ctx.callbacks.beforeNodeRemoved(tempNode) === false) return;
+    tempNode.remove();
+    ctx.callbacks.afterNodeRemoved(tempNode);
+  }
+  function isIdInConsideration(ctx, id) {
+    return !ctx.deadIds.has(id);
+  }
+  function idIsWithinNode(ctx, id, targetNode) {
+    let idSet = ctx.idMap.get(targetNode) || EMPTY_SET;
+    return idSet.has(id);
+  }
+  function removeIdsFromConsideration(ctx, node) {
+    let idSet = ctx.idMap.get(node) || EMPTY_SET;
+    for (const id of idSet) {
+      ctx.deadIds.add(id);
+    }
+  }
+  function getIdIntersectionCount(ctx, node1, node2) {
+    let sourceSet = ctx.idMap.get(node1) || EMPTY_SET;
+    let matchCount = 0;
+    for (const id of sourceSet) {
+      if (isIdInConsideration(ctx, id) && idIsWithinNode(ctx, id, node2)) {
+        ++matchCount;
+      }
+    }
+    return matchCount;
+  }
+  function populateIdMapForNode(node, idMap) {
+    let nodeParent = node.parentElement;
+    let idElements = node.querySelectorAll("[id]");
+    for (const elt of idElements) {
+      let current = elt;
+      while (current !== nodeParent && current != null) {
+        let idSet = idMap.get(current);
+        if (idSet == null) {
+          idSet = /* @__PURE__ */ new Set();
+          idMap.set(current, idSet);
+        }
+        idSet.add(elt.id);
+        current = current.parentElement;
+      }
+    }
+  }
+  function createIdMap(oldContent, newContent) {
+    let idMap = /* @__PURE__ */ new Map();
+    populateIdMapForNode(oldContent, idMap);
+    populateIdMapForNode(newContent, idMap);
+    return idMap;
+  }
+  return {
+    morph,
+    defaults
+  };
+}();
+function morphElements(currentElement, newElement, { callbacks, ...options } = {}) {
+  Idiomorph.morph(currentElement, newElement, {
+    ...options,
+    callbacks: new DefaultIdiomorphCallbacks(callbacks)
+  });
+}
+function morphChildren(currentElement, newElement) {
+  morphElements(currentElement, newElement.children, {
+    morphStyle: "innerHTML"
+  });
+}
+var DefaultIdiomorphCallbacks = class {
+  #beforeNodeMorphed;
+  constructor({ beforeNodeMorphed } = {}) {
+    this.#beforeNodeMorphed = beforeNodeMorphed || (() => true);
+  }
+  beforeNodeAdded = (node) => {
+    return !(node.id && node.hasAttribute("data-turbo-permanent") && document.getElementById(node.id));
+  };
+  beforeNodeMorphed = (currentElement, newElement) => {
+    if (currentElement instanceof Element) {
+      if (!currentElement.hasAttribute("data-turbo-permanent") && this.#beforeNodeMorphed(currentElement, newElement)) {
+        const event = dispatch("turbo:before-morph-element", {
+          cancelable: true,
+          target: currentElement,
+          detail: { currentElement, newElement }
+        });
+        return !event.defaultPrevented;
+      } else {
+        return false;
+      }
+    }
+  };
+  beforeAttributeUpdated = (attributeName, target, mutationType) => {
+    const event = dispatch("turbo:before-morph-attribute", {
+      cancelable: true,
+      target,
+      detail: { attributeName, mutationType }
+    });
+    return !event.defaultPrevented;
+  };
+  beforeNodeRemoved = (node) => {
+    return this.beforeNodeMorphed(node);
+  };
+  afterNodeMorphed = (currentElement, newElement) => {
+    if (currentElement instanceof Element) {
+      dispatch("turbo:morph-element", {
+        target: currentElement,
+        detail: { currentElement, newElement }
+      });
+    }
+  };
+};
+var MorphingFrameRenderer = class extends FrameRenderer {
+  static renderElement(currentElement, newElement) {
+    dispatch("turbo:before-frame-morph", {
+      target: currentElement,
+      detail: { currentElement, newElement }
+    });
+    morphChildren(currentElement, newElement);
+  }
+};
 var PageRenderer = class extends Renderer {
   static renderElement(currentElement, newElement) {
     if (document.body && newElement instanceof HTMLBodyElement) {
@@ -9586,7 +9470,7 @@ var MorphingPageRenderer = class extends PageRenderer {
       }
     });
     for (const frame of currentElement.querySelectorAll("turbo-frame")) {
-      if (canRefreshFrame(frame)) frame.reload();
+      if (canRefreshFrame(frame)) refreshFrame(frame);
     }
     dispatch("turbo:morph", { detail: { currentElement, newElement } });
   }
@@ -9602,6 +9486,12 @@ var MorphingPageRenderer = class extends PageRenderer {
 };
 function canRefreshFrame(frame) {
   return frame instanceof FrameElement && frame.src && frame.refresh === "morph" && !frame.closest("[data-turbo-permanent]");
+}
+function refreshFrame(frame) {
+  frame.addEventListener("turbo:before-frame-render", ({ detail }) => {
+    detail.render = MorphingFrameRenderer.renderElement;
+  }, { once: true });
+  frame.reload();
 }
 var SnapshotCache = class {
   keys = [];
@@ -9657,7 +9547,7 @@ var PageView = class extends View {
   renderPage(snapshot, isPreview = false, willRender = true, visit2) {
     const shouldMorphPage = this.isPageRefresh(visit2) && this.snapshot.shouldMorphPage;
     const rendererClass = shouldMorphPage ? MorphingPageRenderer : PageRenderer;
-    const renderer = new rendererClass(this.snapshot, snapshot, isPreview, willRender);
+    const renderer = new rendererClass(this.snapshot, snapshot, rendererClass.renderElement, isPreview, willRender);
     if (!renderer.shouldRender) {
       this.forceReloaded = true;
     } else {
@@ -9667,7 +9557,7 @@ var PageView = class extends View {
   }
   renderError(snapshot, visit2) {
     visit2?.changeHistory();
-    const renderer = new ErrorRenderer(this.snapshot, snapshot, false);
+    const renderer = new ErrorRenderer(this.snapshot, snapshot, ErrorRenderer.renderElement, false);
     return this.render(renderer);
   }
   clearSnapshotCache() {
@@ -9789,8 +9679,11 @@ var Session = class {
   frameRedirector = new FrameRedirector(this, document.documentElement);
   streamMessageRenderer = new StreamMessageRenderer();
   cache = new Cache(this);
+  drive = true;
   enabled = true;
+  progressBarDelay = 500;
   started = false;
+  formMode = "on";
   #pageRefreshDebouncePeriod = 150;
   constructor(recentRequests2) {
     this.recentRequests = recentRequests2;
@@ -9866,28 +9759,10 @@ var Session = class {
     this.view.clearSnapshotCache();
   }
   setProgressBarDelay(delay) {
-    console.warn(
-      "Please replace `session.setProgressBarDelay(delay)` with `session.progressBarDelay = delay`. The function is deprecated and will be removed in a future version of Turbo.`"
-    );
     this.progressBarDelay = delay;
   }
-  set progressBarDelay(delay) {
-    config.drive.progressBarDelay = delay;
-  }
-  get progressBarDelay() {
-    return config.drive.progressBarDelay;
-  }
-  set drive(value) {
-    config.drive.enabled = value;
-  }
-  get drive() {
-    return config.drive.enabled;
-  }
-  set formMode(value) {
-    config.forms.mode = value;
-  }
-  get formMode() {
-    return config.forms.mode;
+  setFormMode(mode) {
+    this.formMode = mode;
   }
   get location() {
     return this.history.location;
@@ -9983,12 +9858,12 @@ var Session = class {
     this.notifyApplicationAfterVisitingSamePageLocation(oldURL, newURL);
   }
   // Form submit observer delegate
-  willSubmitForm(form, submitter2) {
-    const action = getAction$1(form, submitter2);
-    return this.submissionIsNavigatable(form, submitter2) && locationIsVisitable(expandURL(action), this.snapshot.rootLocation);
+  willSubmitForm(form, submitter) {
+    const action = getAction$1(form, submitter);
+    return this.submissionIsNavigatable(form, submitter) && locationIsVisitable(expandURL(action), this.snapshot.rootLocation);
   }
-  formSubmitted(form, submitter2) {
-    this.navigator.submitForm(form, submitter2);
+  formSubmitted(form, submitter) {
+    this.navigator.submitForm(form, submitter);
   }
   // Page observer delegate
   pageBecameInteractive() {
@@ -10100,12 +9975,12 @@ var Session = class {
     });
   }
   // Helpers
-  submissionIsNavigatable(form, submitter2) {
-    if (config.forms.mode == "off") {
+  submissionIsNavigatable(form, submitter) {
+    if (this.formMode == "off") {
       return false;
     } else {
-      const submitterIsNavigatable = submitter2 ? this.elementIsNavigatable(submitter2) : true;
-      if (config.forms.mode == "optin") {
+      const submitterIsNavigatable = submitter ? this.elementIsNavigatable(submitter) : true;
+      if (this.formMode == "optin") {
         return submitterIsNavigatable && form.closest('[data-turbo="true"]') != null;
       } else {
         return submitterIsNavigatable && this.elementIsNavigatable(form);
@@ -10115,7 +9990,7 @@ var Session = class {
   elementIsNavigatable(element) {
     const container = findClosestRecursively(element, "[data-turbo]");
     const withinFrame = findClosestRecursively(element, "turbo-frame");
-    if (config.drive.enabled || withinFrame) {
+    if (this.drive || withinFrame) {
       if (container) {
         return container.getAttribute("data-turbo") != "false";
       } else {
@@ -10174,22 +10049,13 @@ function clearCache() {
   session.clearCache();
 }
 function setProgressBarDelay(delay) {
-  console.warn(
-    "Please replace `Turbo.setProgressBarDelay(delay)` with `Turbo.config.drive.progressBarDelay = delay`. The top-level function is deprecated and will be removed in a future version of Turbo.`"
-  );
-  config.drive.progressBarDelay = delay;
+  session.setProgressBarDelay(delay);
 }
 function setConfirmMethod(confirmMethod) {
-  console.warn(
-    "Please replace `Turbo.setConfirmMethod(confirmMethod)` with `Turbo.config.forms.confirm = confirmMethod`. The top-level function is deprecated and will be removed in a future version of Turbo.`"
-  );
-  config.forms.confirm = confirmMethod;
+  FormSubmission.confirmMethod = confirmMethod;
 }
 function setFormMode(mode) {
-  console.warn(
-    "Please replace `Turbo.setFormMode(mode)` with `Turbo.config.forms.mode = mode`. The top-level function is deprecated and will be removed in a future version of Turbo.`"
-  );
-  config.forms.mode = mode;
+  session.setFormMode(mode);
 }
 var Turbo = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -10200,7 +10066,6 @@ var Turbo = /* @__PURE__ */ Object.freeze({
   PageSnapshot,
   FrameRenderer,
   fetch: fetchWithTurboHeaders,
-  config,
   start,
   registerAdapter,
   visit,
@@ -10222,7 +10087,6 @@ var FrameController = class {
   #connected = false;
   #hasBeenLoaded = false;
   #ignoredAttributes = /* @__PURE__ */ new Set();
-  #shouldMorphFrame = false;
   action = null;
   constructor(element) {
     this.element = element;
@@ -10271,8 +10135,7 @@ var FrameController = class {
     }
   }
   sourceURLReloaded() {
-    const { refresh, src } = this.element;
-    this.#shouldMorphFrame = src && refresh === "morph";
+    const { src } = this.element;
     this.element.removeAttribute("complete");
     this.element.src = null;
     this.element.src = src;
@@ -10310,7 +10173,6 @@ var FrameController = class {
         }
       }
     } finally {
-      this.#shouldMorphFrame = false;
       this.fetchResponseLoaded = () => Promise.resolve();
     }
   }
@@ -10335,14 +10197,14 @@ var FrameController = class {
     this.#navigateFrame(element, location2);
   }
   // Form submit observer delegate
-  willSubmitForm(element, submitter2) {
-    return element.closest("turbo-frame") == this.element && this.#shouldInterceptNavigation(element, submitter2);
+  willSubmitForm(element, submitter) {
+    return element.closest("turbo-frame") == this.element && this.#shouldInterceptNavigation(element, submitter);
   }
-  formSubmitted(element, submitter2) {
+  formSubmitted(element, submitter) {
     if (this.formSubmission) {
       this.formSubmission.stop();
     }
-    this.formSubmission = new FormSubmission(this, element, submitter2);
+    this.formSubmission = new FormSubmission(this, element, submitter);
     const { fetchRequest } = this.formSubmission;
     this.prepareRequest(fetchRequest);
     this.formSubmission.start();
@@ -10434,10 +10296,9 @@ var FrameController = class {
   // Private
   async #loadFrameResponse(fetchResponse, document2) {
     const newFrameElement = await this.extractForeignFrameElement(document2.body);
-    const rendererClass = this.#shouldMorphFrame ? MorphingFrameRenderer : FrameRenderer;
     if (newFrameElement) {
       const snapshot = new Snapshot(newFrameElement);
-      const renderer = new rendererClass(this, this.view.snapshot, snapshot, false, false);
+      const renderer = new FrameRenderer(this, this.view.snapshot, snapshot, FrameRenderer.renderElement, false, false);
       if (this.view.renderPromise) await this.view.renderPromise;
       this.changeHistory();
       await this.view.render(renderer);
@@ -10463,9 +10324,9 @@ var FrameController = class {
       request.perform();
     });
   }
-  #navigateFrame(element, url, submitter2) {
-    const frame = this.#findFrameElement(element, submitter2);
-    frame.delegate.proposeVisitIfNavigatedWithAction(frame, getVisitAction(submitter2, element, frame));
+  #navigateFrame(element, url, submitter) {
+    const frame = this.#findFrameElement(element, submitter);
+    frame.delegate.proposeVisitIfNavigatedWithAction(frame, getVisitAction(submitter, element, frame));
     this.#withCurrentNavigationElement(element, () => {
       frame.src = url;
     });
@@ -10537,8 +10398,8 @@ var FrameController = class {
     const { location: location2, redirected, statusCode } = wrapped;
     return session.visit(location2, { response: { redirected, statusCode, responseHTML } });
   }
-  #findFrameElement(element, submitter2) {
-    const id = getAttribute("data-turbo-frame", submitter2, element) || this.element.getAttribute("target");
+  #findFrameElement(element, submitter) {
+    const id = getAttribute("data-turbo-frame", submitter, element) || this.element.getAttribute("target");
     return getFrameElementById(id) ?? this.element;
   }
   async extractForeignFrameElement(container) {
@@ -10560,13 +10421,13 @@ var FrameController = class {
     }
     return null;
   }
-  #formActionIsVisitable(form, submitter2) {
-    const action = getAction$1(form, submitter2);
+  #formActionIsVisitable(form, submitter) {
+    const action = getAction$1(form, submitter);
     return locationIsVisitable(expandURL(action), this.rootLocation);
   }
-  #shouldInterceptNavigation(element, submitter2) {
-    const id = getAttribute("data-turbo-frame", submitter2, element) || this.element.getAttribute("target");
-    if (element instanceof HTMLFormElement && !this.#formActionIsVisitable(element, submitter2)) {
+  #shouldInterceptNavigation(element, submitter) {
+    const id = getAttribute("data-turbo-frame", submitter, element) || this.element.getAttribute("target");
+    if (element instanceof HTMLFormElement && !this.#formActionIsVisitable(element, submitter)) {
       return false;
     }
     if (!this.enabled || id == "_top") {
@@ -10581,7 +10442,7 @@ var FrameController = class {
     if (!session.elementIsNavigatable(element)) {
       return false;
     }
-    if (submitter2 && !session.elementIsNavigatable(submitter2)) {
+    if (submitter && !session.elementIsNavigatable(submitter)) {
       return false;
     }
     return true;
@@ -10935,7 +10796,6 @@ function walk(obj) {
 
 // node_modules/@hotwired/turbo-rails/app/javascript/turbo/cable_stream_source_element.js
 var TurboCableStreamSourceElement = class extends HTMLElement {
-  static observedAttributes = ["channel", "signed-stream-name"];
   async connectedCallback() {
     connectStreamSource(this);
     this.subscription = await subscribeTo(this.channel, {
@@ -10947,13 +10807,6 @@ var TurboCableStreamSourceElement = class extends HTMLElement {
   disconnectedCallback() {
     disconnectStreamSource(this);
     if (this.subscription) this.subscription.unsubscribe();
-    this.subscriptionDisconnected();
-  }
-  attributeChangedCallback() {
-    if (this.subscription) {
-      this.disconnectedCallback();
-      this.connectedCallback();
-    }
   }
   dispatchMessageEvent(data) {
     const event = new MessageEvent("message", { data });
@@ -10979,9 +10832,9 @@ if (customElements.get("turbo-cable-stream-source") === void 0) {
 function encodeMethodIntoRequestBody(event) {
   if (event.target instanceof HTMLFormElement) {
     const { target: form, detail: { fetchOptions } } = event;
-    form.addEventListener("turbo:submit-start", ({ detail: { formSubmission: { submitter: submitter2 } } }) => {
+    form.addEventListener("turbo:submit-start", ({ detail: { formSubmission: { submitter } } }) => {
       const body = isBodyInit(fetchOptions.body) ? fetchOptions.body : new URLSearchParams();
-      const method = determineFetchMethod(submitter2, body, form);
+      const method = determineFetchMethod(submitter, body, form);
       if (!/get/i.test(method)) {
         if (/post/i.test(method)) {
           body.delete("_method");
@@ -10993,8 +10846,8 @@ function encodeMethodIntoRequestBody(event) {
     }, { once: true });
   }
 }
-function determineFetchMethod(submitter2, body, form) {
-  const formMethod = determineFormMethod(submitter2);
+function determineFetchMethod(submitter, body, form) {
+  const formMethod = determineFormMethod(submitter);
   const overrideMethod = body.get("_method");
   const method = form.getAttribute("method") || "get";
   if (typeof formMethod == "string") {
@@ -11005,12 +10858,12 @@ function determineFetchMethod(submitter2, body, form) {
     return method;
   }
 }
-function determineFormMethod(submitter2) {
-  if (submitter2 instanceof HTMLButtonElement || submitter2 instanceof HTMLInputElement) {
-    if (submitter2.name === "_method") {
-      return submitter2.value;
-    } else if (submitter2.hasAttribute("formmethod")) {
-      return submitter2.formMethod;
+function determineFormMethod(submitter) {
+  if (submitter instanceof HTMLButtonElement || submitter instanceof HTMLInputElement) {
+    if (submitter.name === "_method") {
+      return submitter.value;
+    } else if (submitter.hasAttribute("formmethod")) {
+      return submitter.formMethod;
     } else {
       return null;
     }
@@ -13542,7 +13395,7 @@ bootstrap/dist/js/bootstrap.js:
 
 @hotwired/turbo/dist/turbo.es2017-esm.js:
   (*!
-  Turbo 8.0.12
+  Turbo 8.0.5
   Copyright © 2024 37signals LLC
    *)
 */
