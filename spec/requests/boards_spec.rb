@@ -72,13 +72,29 @@ RSpec.describe "Boards", type: :request do
     end
   end
   describe "GET /boards/:id" do
-    it "掲示板詳細にアクセスできること" do
-      user = create(:user)
-      board = create(:board, user: user)
-      get board_path(board)
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include(board.title)
-      expect(response.body).to include(board.body)
+    let(:user) { create(:user) }
+    context "パスワード保護されていない掲示板の場合" do
+      it "掲示板詳細にアクセスできること" do
+        board = create(:board, user: user)
+        get board_path(board)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(board.title)
+        expect(response.body).to include(board.body)
+      end
+    end
+    context "パスワード保護されている掲示板の場合" do
+      let(:private_board) { create(:board, user: user, title: "パスワード付きのタイトル", body: "パスワード付きの本文", password_digest: BCrypt::Password.create("password123")) }
+      it "パスワード未認証の場合、パスワード入力ページに遷移される" do
+        get board_path(private_board)
+        expect(response).to redirect_to(enter_password_board_path(private_board))
+      end
+      it "パスワード認証済みの場合、掲示板詳細にアクセスできる" do
+        post verify_password_board_path(private_board), params: { password: "password123" }
+        get board_path(private_board)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(private_board.title)
+        expect(response.body).to include(private_board.body)
+      end
     end
   end
 end

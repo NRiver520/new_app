@@ -1,6 +1,6 @@
 class BoardsController < ApplicationController
   skip_before_action :require_login, only: %i[index show autocomplete]
-  before_action :set_board, only: %i[edit update destroy enter_password verify_password]
+  before_action :set_board, only: %i[show edit update destroy enter_password verify_password]
 
   def index
     @q = Board.ransack(params[:q])
@@ -26,7 +26,6 @@ class BoardsController < ApplicationController
   end
 
   def show
-    @board = Board.find(params[:id])
     if @board.password_digest.present? && session[:authenticated_board_id] != @board.id
       redirect_to enter_password_board_path(@board)
     else
@@ -82,9 +81,20 @@ class BoardsController < ApplicationController
   private
 
   def set_board
-    @board = current_user.boards.find(params[:id])
+    @board = Board.find(params[:id])
+    if action_name.in?(%w[edit update destroy]) && @board.user != current_user
+      flash[:danger] = "権限がありません"
+      redirect_to board_path
+    end
   rescue ActiveRecord::RecordNotFound
     flash[:danger] = "権限がありません"
+    redirect_to boards_path
+  end
+
+  def find_board
+    @board = Board.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:danger] = "掲示板が見つかりません"
     redirect_to boards_path
   end
 

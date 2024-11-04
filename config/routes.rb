@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resource :profile, only: %i[show edit update]
   get "boards/autocomplete", to: "boards#autocomplete", as: :autocomplete_boards
   resources :boards do
-    resources :comments, only: %i[create destroy], shollow: true
+    resources :comments, only: %i[create destroy], shallow: true
     member do
       get "enter_password"
       post "verify_password"
