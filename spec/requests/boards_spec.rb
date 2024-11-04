@@ -74,7 +74,7 @@ RSpec.describe "Boards", type: :request do
   describe "GET /boards/:id" do
     it "掲示板詳細にアクセスできること" do
       user = create(:user)
-      board = create(:board, user:user)
+      board = create(:board, user: user)
       get board_path(board)
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(board.title)
