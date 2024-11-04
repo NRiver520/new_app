@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "UserSessions", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
+  it "ログインページにアクセスできる" do
+    get login_path
+    expect(response).to have_http_status(:ok)
   end
 end

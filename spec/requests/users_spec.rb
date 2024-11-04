@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
+  it "会員登録にアクセスできる" do
+    get new_user_path
+    expect(response).to have_http_status(:ok)
   end
 end

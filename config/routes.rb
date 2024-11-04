@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  # namespace :admin do
-  #   get "dashboards/index"
-  #   root "dashboards#index"
-  #   resource :dashboard, only: %i[index]
-  # end
+
 
   root "homes#top"
   resources :users, only: %i[new create]

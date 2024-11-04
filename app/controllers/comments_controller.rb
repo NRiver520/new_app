@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
       flash[:success] = "返信しました"
       redirect_to board_path(comment.board)
     else
-      flash[:danger] = "返信に失敗しました"
+      flash[:danger] = "本文を入力してください"
       redirect_to board_path(comment.board)
     end
   end

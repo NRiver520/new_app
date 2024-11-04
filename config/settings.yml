@@ -1,0 +1,2 @@
+sorcery:
+  google_callback_url: "https://www.bey-board-x.com/oauth/callback?provider=google"
