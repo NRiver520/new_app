@@ -15,12 +15,6 @@
           <li class="nav-item">
             <%= link_to '掲示板一覧' , boards_path , class: 'nav-link text-primary' %>
           </li>
-          <li class="nav-item">
-            <%= link_to '人気(未実装)' , '#' , class: 'nav-link text-primary' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to '新着(未実装)' , '#' , class: 'nav-link text-primary' %>
-          </li>
         </ul>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
@@ -30,7 +24,6 @@
                 <img src="<%= current_user.profile_image.present? ? current_user.profile_image.url : asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(current_user.rank) %>" width="50" height="50"><%= current_user.username %>
               </li>
               <li><%= link_to 'ユーザー情報', profile_path, class: 'dropdownitem' %></li>
-              <li><%= link_to '参加中の掲示板(開設予定)', '#', class: 'dropdownitem' %></li>
             </ul>
           </li>
         </ul>

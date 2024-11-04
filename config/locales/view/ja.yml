@@ -1,4 +1,21 @@
 ja:
+  activerecord:
+    attributes:
+      board:
+        title: "タイトル"
+        body: "本文"
+      user:
+        username: "ユーザー名"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+        email: "メールアドレス"
+    errors:
+      messages:
+        invalid: "が正しくありません"
+        blank: "を入力してください"
+        too_short: "は%{count}文字以上で入力してください"
+        taken: "はすでに使用されています"
+        confirmation: "とパスワードの入力が一致しません"
   time:
     formats:
       strftime: '%Y/%m/%d %H:%M'
