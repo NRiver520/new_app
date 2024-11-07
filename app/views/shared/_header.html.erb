@@ -17,17 +17,17 @@
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item dropdown">
-            <%= link_to '<i class="bi bi-person" style="font-size: 40px;"></i>'.html_safe, '#', class: 'd-flex align-items-center text-decoration-none dropdown-toggle', id: 'dropdownUser', data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false'} %>
-            <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser">
-              <li>
-                <img src="<%= current_user.profile_image.present? ? current_user.profile_image.url : asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(current_user.rank) %>" width="50" height="50"><%= current_user.username %>
-              </li>
-              <li><%= link_to 'ユーザー情報', profile_path, class: 'dropdownitem' %></li>
-            </ul>
-          </li>
+          <li class="nav-item">
+            <%= link_to profile_path, class: 'd-flex align-items-center text-decoration-none me-3 mb-2 mb-md-0' do %>
+              <img src="<%= current_user.profile_image.present? ? current_user.profile_image.url : asset_path('default.png') %>" 
+                   alt="user-icon" 
+                   class="rounded-circle border border-3 <%= rank_border_class(current_user.rank) %>" 
+                   width="60" 
+                   height="60">
+              <% end %>
+            </li>
         </ul>
-        <%= link_to 'ログアウト', logout_path, class: 'btn btn-danger ms-3', data: { turbo_method: :delete } %>
+        <%= link_to 'ログアウト', logout_path, class: 'btn btn-danger', data: { turbo_method: :delete } %>
       </div>
     </div>
   </nav>
