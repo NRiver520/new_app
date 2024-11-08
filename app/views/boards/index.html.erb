@@ -1,5 +1,5 @@
 <% content_for(:title, '掲示板一覧') %>
-<div class="container pt-3" style="padding-bottom: 50px;">
+<div class="container-fluid pt-3 custom-container">
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
       <form>
@@ -14,15 +14,19 @@
   </div>
 
   <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <% if @boards.any? %>
-          <%= render partial: 'boards/board', collection: @boards %>
-        <% else %>
-          <div class="mb-3">掲示板がありません</div>
-        <% end %>
-      </div>
-      <%= paginate @boards, theme: 'bootstrap-5' %>
-    </div>
+    <% if @boards.any? %>
+      <% @boards.each_slice(3) do |board_row| %>
+        <div class="row">
+          <% board_row.each do |board| %>
+            <div class="col-md-4 col-sm-12 mb-1">
+              <%= render partial: 'boards/board' , locals: { board: board } %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="mb-3">掲示板がありません</div>
+    <% end %>
+    <%= paginate @boards, theme: 'bootstrap-5' %>
   </div>
 </div>

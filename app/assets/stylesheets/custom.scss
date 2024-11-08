@@ -1,6 +1,21 @@
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 767px) {
   .logo img {
     height: 50px !important;
+  }
+
+  .custom-padding {
+    padding-bottom: 100px !important;
+  }
+}
+
+.custom-container {
+  padding-bottom: 50px;
+}
+
+@media (min-width: 992px) {
+  .custom-container {
+    margin-right: 50px;
+    max-width: 80%;
   }
 }
 
@@ -24,4 +39,9 @@
 
 .ui-helper-hidden-accessible {
   display: none;
+}
+
+.custom-padding {
+  padding-bottom: 220px;
+  margin-right: 150px;
 }
