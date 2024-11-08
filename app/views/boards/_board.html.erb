@@ -1,23 +1,22 @@
-<div class="col-sm-12 col-12 mb-3">
-  <div id="board-id-<%= board.id %>">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex">
-          <h4 class="card-title">
-            <%= link_to board.title, board_path(board) %>
-            <% if board.password_digest.present? %>
-              <i class="fas fa-lock"></i>
-            <% end %>
-          </h4>
-        </div>
-        <ul class="list-inline">
-          <li>
-            <img src="<%= board.user.profile_image.present? ? board.user.profile_image.url : asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(board.user.rank) %>" width="50" height="50"><%= board.user.username %>
-          </li>
-          <%= l board.created_at, format: :strftime %></li>
-        </ul>
-        <p class="card-text"><%= truncate(board.body, length: 20) %></p>
+
+<div id="board-id-<%= board.id %>" style="width: 100%;">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex">
+        <h4 class="card-title">
+          <%= link_to board.title, board_path(board) %>
+          <% if board.password_digest.present? %>
+            <i class="fas fa-lock"></i>
+          <% end %>
+        </h4>
       </div>
+      <ul class="list-inline">
+        <li>
+          <img src="<%= board.user.profile_image.present? ? board.user.profile_image.url : asset_path('default.png') %>" alt="user-icon" class="rounded-circle border border-3 <%= rank_border_class(board.user.rank) %>" width="50" height="50"><%= board.user.username %>
+        </li>
+        <%= l board.created_at, format: :strftime %></li>
+      </ul>
+      <p class="card-text"><%= truncate(board.body, length: 20) %></p>
     </div>
   </div>
 </div>

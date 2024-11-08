@@ -12,4 +12,5 @@ class Board < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [ "title" ]
   end
+  paginates_per 30
 end
