@@ -8,15 +8,9 @@ class UserSessionsController < ApplicationController
     @user = login(params[:email], params[:password])
 
     if @user
-      if @user.confirmed?
-        params[:remember_me] == "1" ? remember(@user) : forget(@user)
-        flash[:success] = "ログインしました"
-        redirect_to root_path
-      else
-        logout
-        flash.now[:danger] = "メールアドレスが確認されていません。確認メールをチェックしてください。"
-        render :new, status: :unprocessable_entity
-      end
+      params[:remember_me] == "1" ? remember(@user) : forget(@user)
+      flash[:success] = "ログインしました"
+      redirect_to root_path
     else
       flash.now[:danger] = "ログインに失敗しました"
       render :new, status: :unprocessable_entity
