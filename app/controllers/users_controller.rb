@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :require_login, only: %i[new create confirm_email]
+  skip_before_action :require_login, only: %i[new create]
 
   def new
     @user = User.new
@@ -8,25 +8,19 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:success] = "確認メールを送信しました"
-      UserMailer.registration_confirmation(@user).deliver_now
-      redirect_to login_path
+      begin
+        UserMailer.registration_complete(@user).deliver_now
+        flash[:success] = "登録が完了しました"
+        redirect_to login_path
+      rescue => e
+        @user.destroy
+        flash[:danger] = "メール送信に失敗しました。メールアドレスを確認し、再度お試しください。"
+        Rails.logger.error("メール送信エラー: #{e.message}")
+        render :new, status: :unprocessable_entity
+      end
     else
       flash.now[:danger] = "会員登録に失敗しました"
       render :new, status: :unprocessable_entity
-    end
-  end
-
-  def confirm_email
-    user = User.find_by(confirmation_token: params[:token])
-
-    if user && user.confirmation_sent_at >= 2.days.ago
-      flash[:success] = "アカウントが有効化されました。ログインしてください"
-      user.update(confirmed_at: Time.current, confirmation_token: nil)
-      redirect_to login_path
-    else
-      flash[:danger] = "確認リンクの期限が切れています"
-      redirect_to root_path
     end
   end
 
