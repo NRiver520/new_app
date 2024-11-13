@@ -8,8 +8,7 @@ class BoardsController < ApplicationController
                  when "newest" then { created_at: :desc }
                  when "oldest" then { created_at: :asc }
                  when "most_commented" then "COUNT(comments.id) DESC"
-                 else { created_at: :desc }
-                 end
+                 else { created_at: :desc } end
     @boards = @q.result(distinct: true)
                 .includes(:user)
                 .left_joins(:comments)
