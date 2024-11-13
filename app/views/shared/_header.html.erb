@@ -1,6 +1,6 @@
-<header class="bg-light border-bottom">
+<header class="custom-header bg-light border-bottom">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
+    <div class="container d-flex justify-content-between align-items-center">
       <div class="logo">
         <%= link_to root_path do %>
           <%= image_tag 'favicon.ico' , class: 'img-fiuld' , style: 'height: 60px;' %>
@@ -10,12 +10,8 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <%= link_to '掲示板一覧' , boards_path , class: 'nav-link text-primary' %>
-          </li>
-        </ul>
+
+      <div class="collapse navbar-collapse ma-auto" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <%= link_to profile_path, class: 'd-flex align-items-center text-decoration-none me-3 mb-2 mb-md-0' do %>

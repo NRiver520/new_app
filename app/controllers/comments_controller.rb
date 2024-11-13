@@ -15,7 +15,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy!
     flash[:success] = "削除しました"
-    redirect_to board_path, status: :see_other
+    redirect_to board_path(@comment.board), status: :see_other
   end
 
   private

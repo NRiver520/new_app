@@ -1,9 +1,26 @@
 <% content_for(:title, '掲示板一覧') %>
-<div class="container-fluid pt-3 custom-container">
+<div class="container-fluid custom-container">
+<%= render 'shared/flash_message' %>
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
       <form>
         <div class="input-group mb-3">
+          <div class="d-flex justify-content-end me-2">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              並び替え
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+              <li>
+                <%= link_to "新しい順", boards_path(sort: "newest"), class: "dropdown-item #{"active" if params[:sort] == "newest"}" %>
+              </li>
+              <li>
+                <%= link_to "古い順", boards_path(sort: "oldest"), class: "dropdown-item #{"active" if params[:sort] == "oldest"}" %>
+              </li>
+              <li>
+                <%= link_to "コメントが多い順", boards_path(sort: "most_commented"), class: "dropdown-item #{"active" if params[:sort] == "most_commented"}" %>
+              </li>
+            </ul>
+          </div>
           <%= render 'search_form', url: boards_path, q: @q %>
           <div class="input-group-append ms-2">
             <%= link_to '新規作成' , new_board_path, class: 'btn btn-secondary' %>

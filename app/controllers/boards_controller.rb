@@ -4,7 +4,18 @@ class BoardsController < ApplicationController
 
   def index
     @q = Board.ransack(params[:q])
-    @boards = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page])
+    sort_order = case params[:sort]
+                 when "newest" then { created_at: :desc }
+                 when "oldest" then { created_at: :asc}
+                 when "most_commented" then "COUNT(comments.id) DESC"
+                 else { created_at: :desc }
+                 end
+    @boards = @q.result(distinct: true)
+                .includes(:user)
+                .left_joins(:comments)
+                .group(:id)
+                .order(sort_order)
+                .page(params[:page])
   end
 
   def new
