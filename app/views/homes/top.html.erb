@@ -1,4 +1,5 @@
-<main class="container mt-4" style="padding-bottom: 30px;">
+<main class="container custom-container">
+<%= render 'shared/flash_message' %>
   <div class="text-center bg-success text-white py-5">
     <h1>ベイブレード交流掲示板</h1>
   </div>
@@ -7,6 +8,7 @@
       <%= link_to 'このサイトの使い方' , '/manual' , class: 'nav-link h3' %>
     </h3>
   </nav>
+  <h2><%= link_to '掲示板一覧' , boards_path , class: 'nav-link text-primary' %></h2>
   <div class="row me-5 mt-5 ">
     <!-- ピックアップ -->
     <div class="col-8 mb-4">
@@ -37,6 +39,7 @@
         <% else %>
             <li class="list-group-item">人気の掲示板はありません</li>
         <% end %>
+      </ul>
     </div>
 
     <!-- 新着 -->

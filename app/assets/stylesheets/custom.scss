@@ -10,12 +10,14 @@
 
 .custom-container {
   padding-bottom: 50px;
+  padding-top: 100px
 }
 
 @media (min-width: 992px) {
   .custom-container {
     margin-right: 50px;
     max-width: 80%;
+    padding-top: 95px;
   }
 }
 
@@ -44,4 +46,23 @@
 .custom-padding {
   padding-bottom: 220px;
   margin-right: 150px;
+  padding-top: 95px
+}
+
+.sidebar {
+  top: 0;
+  width: 300px;
+  position: fixed;
+  background-color: #929eaa6c;
+  padding-top: 80px;
+  padding-bottom: 50px;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.custom-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
 }

@@ -1,9 +1,10 @@
 <% content_for(:title, '会員登録') %>
-<div class="container">
+<div class="container custom-container">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-auto">
       <h1>ユーザー登録</h1>
       <%= form_with model: @user do |f| %>
+        <%= render 'shared/flash_message' %>
         <%= render 'shared/error_messages', object: f.object %>
         <div class="mb-3">
           <%= f.label :ユーザー名, class: "form-label" %>
