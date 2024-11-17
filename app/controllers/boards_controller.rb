@@ -74,7 +74,9 @@ class BoardsController < ApplicationController
   end
 
   def autocomplete
+    Rails.logger.debug("Params received: #{params[:term]}")
     boards = Board.where("title LIKE ?", "%#{params[:term]}%").limit(10).pluck(:title)
+    Rails.logger.debug("Boards found: #{boards}")
     render json: boards
   end
 

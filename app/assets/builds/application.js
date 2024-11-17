@@ -2181,14 +2181,14 @@ var require_bootstrap = __commonJS({
       const isRTL = () => document.documentElement.dir === "rtl";
       const defineJQueryPlugin = (plugin) => {
         onDOMContentLoaded(() => {
-          const $ = getjQuery();
-          if ($) {
+          const $2 = getjQuery();
+          if ($2) {
             const name = plugin.NAME;
-            const JQUERY_NO_CONFLICT = $.fn[name];
-            $.fn[name] = plugin.jQueryInterface;
-            $.fn[name].Constructor = plugin;
-            $.fn[name].noConflict = () => {
-              $.fn[name] = JQUERY_NO_CONFLICT;
+            const JQUERY_NO_CONFLICT = $2.fn[name];
+            $2.fn[name] = plugin.jQueryInterface;
+            $2.fn[name].Constructor = plugin;
+            $2.fn[name].noConflict = () => {
+              $2.fn[name] = JQUERY_NO_CONFLICT;
               return plugin.jQueryInterface;
             };
           }
@@ -2387,16 +2387,16 @@ var require_bootstrap = __commonJS({
           if (typeof event !== "string" || !element) {
             return null;
           }
-          const $ = getjQuery();
+          const $2 = getjQuery();
           const typeEvent = getTypeEvent(event);
           const inNamespace = event !== typeEvent;
           let jQueryEvent = null;
           let bubbles = true;
           let nativeDispatch = true;
           let defaultPrevented = false;
-          if (inNamespace && $) {
-            jQueryEvent = $.Event(event, args);
-            $(element).trigger(jQueryEvent);
+          if (inNamespace && $2) {
+            jQueryEvent = $2.Event(event, args);
+            $2(element).trigger(jQueryEvent);
             bubbles = !jQueryEvent.isPropagationStopped();
             nativeDispatch = !jQueryEvent.isImmediatePropagationStopped();
             defaultPrevented = jQueryEvent.isDefaultPrevented();
@@ -13344,6 +13344,26 @@ application.register("hello", hello_controller_default);
 
 // app/javascript/application.js
 var bootstrap = __toESM(require_bootstrap());
+document.addEventListener("turbo:load", function() {
+  $("#board-title-search").autocomplete({
+    source: function(request, response) {
+      $.ajax({
+        url: "/boards/autocomplete",
+        dataType: "json",
+        data: {
+          term: request.term
+        },
+        success: function(data) {
+          response(data);
+        },
+        error: function(xhr, status, error2) {
+          console.error("Autocomplete request failed:", status, error2);
+        }
+      });
+    },
+    minLength: 2
+  });
+});
 /*! Bundled license information:
 
 bootstrap/dist/js/bootstrap.js:
