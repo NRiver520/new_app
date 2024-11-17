@@ -1,11 +1,7 @@
-<button class="btn btn-outline-primary rounded-circle p-1 m-1 d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu" style="position: fixed; top: 15px; right: 90px; z-index: 1050;">
-  <i class="bi bi-list">メニュー</i>
-</button>
-
-<div class="collapse d-md-block sidebar" id="sidebarMenu" style="position: fixed; left: 0; top: 0; width: 250px; height: 100%; background-color: #f8f9fa; border-right: 1px solid #ddd; padding: 15px; overflow-y: auto; z-index: 1040;">
-  <h2><%= link_to '掲示板一覧' , boards_path , class: 'nav-link text-primary' %></h2>
+<div class="collapse d-md-block sidebar" id="sidebarMenu" style="position: fixed; left: 0; top: 0; width: 15%; height: 100%; background-color: #f8f9fa; border-right: 1px solid #ddd; padding: 15px; overflow-y: auto; z-index: 1040;">
+  <h2 class="mb-4"><%= link_to '掲示板一覧' , boards_path , class: 'nav-link text-decoration-underline' %></h2>
   <h2 class="h4">ピックアップ</h2>
-  <ul class="list-group">
+  <ul class="list-group mb-4">
     <% if @pickup_boards.present? %>
       <% @pickup_boards.each do |board| %>
         <li class="list-group-item">
@@ -17,7 +13,7 @@
     <% end %>
   </ul>
   <h2 class="h4">人気</h2>
-  <ul class="list-group">
+  <ul class="list-group mb-4">
     <% if @popular_boards.present? %>
       <% @popular_boards.each do |board| %>
         <li class="list-group-item">
@@ -29,7 +25,7 @@
     <% end %>
   </ul>
   <h2 class="h4">新着</h2>
-  <ul class="list-group">
+  <ul class="list-group mb-4">
     <% if @recent_boards.present? %>
       <% @recent_boards.each do |board| %>
         <li class="list-group-item">
@@ -41,8 +37,8 @@
     <% end %>
   </ul>
   <ul class="list-group">
-    <h4><%= link_to '利用規約', '/term', class: 'nav-link text-primary' %></h4>
-    <h4><%= link_to 'プライバシーポリシー', '/privacy', class: 'nav-link text-primary' %></h4>
-    <h4><%= link_to 'お問い合わせ', new_contact_path, class: 'nav-link text-primary' %></h4>
+    <h4 class="mb-4"><%= link_to '利用規約', '/term', class: 'nav-link text-decoration-underline' %></h4>
+    <h4 class="mb-4"><%= link_to 'プライバシーポリシー', '/privacy', class: 'nav-link text-decoration-underline' %></h4>
+    <h4><%= link_to 'お問い合わせ', new_contact_path, class: 'nav-link text-decoration-underline' %></h4>
   </ul>
 </div>

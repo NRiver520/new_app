@@ -1,16 +1,39 @@
 @media screen and (max-width: 767px) {
   .logo img {
     height: 50px !important;
+    margin-left: 0%
   }
 
   .custom-padding {
     padding-bottom: 100px !important;
+    margin-left: 0px !important;
+    padding-left: 5% !important;
+  }
+
+  .custom-container {
+    margin-left: 0px !important;
+  }
+
+  .custom-header {
+    width: 100% !important;
+    margin-left: 0px; 
+  }
+
+  .sidebar {
+    width: 250px !important;
+  }
+
+  .footer-container {
+    width: 100%;
+    margin-left: 0 !important;
+    padding-left: 10px
   }
 }
 
 .custom-container {
   padding-bottom: 50px;
-  padding-top: 100px
+  padding-top: 100px;
+  margin-left: 15%;
 }
 
 @media (min-width: 992px) {
@@ -45,13 +68,13 @@
 
 .custom-padding {
   padding-bottom: 220px;
-  margin-right: 150px;
-  padding-top: 95px
+  padding-top: 95px;
+  margin-left : 15%;
+  padding-left: 10%;
 }
 
 .sidebar {
   top: 0;
-  width: 300px;
   position: fixed;
   background-color: #929eaa6c;
   padding-top: 80px;
@@ -62,7 +85,14 @@
 
 .custom-header {
   position: fixed;
-  width: 100%;
+  width: 85%;
   top: 0;
+  right: 0;
   z-index: 100;
+}
+
+.footer-container {
+  width: 85%;
+  margin-left: 15%;
+  padding-left: 10px;
 }
