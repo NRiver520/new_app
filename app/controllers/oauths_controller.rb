@@ -13,7 +13,7 @@ class OauthsController < ApplicationController
       redirect_to root_path
       return
     end
-    
+
     @user = login_from(provider)
     if @user
       Rails.logger.debug("User found: #{@user.inspect}")
