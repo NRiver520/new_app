@@ -7,6 +7,13 @@ class OauthsController < ApplicationController
 
   def callback
     provider = auth_params[:provider]
+
+    if params[:error].present?
+      flash[:danger] = "ログインがキャンセルされました。再度お試しください。"
+      redirect_to root_path
+      return
+    end
+    
     @user = login_from(provider)
     if @user
       Rails.logger.debug("User found: #{@user.inspect}")

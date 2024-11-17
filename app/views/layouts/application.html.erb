@@ -36,7 +36,9 @@
       <% end %>
     </header>
     <%= render 'shared/sidebar' %>
-    <%= yield %>
+    <main class="main-content"
+      <%= yield %>
+    </main>
     <footer>
       <%= render 'shared/footer' %>
     </footer>

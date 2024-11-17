@@ -1,15 +1,15 @@
-<footer class="bg-dark text-white py-1 fixed-bottom">
-  <div class="container">
+<footer class="bg-dark text-white fixed-bottom">
+  <div class="footer-container">
     <div class="d-flex justify-content-between align-items-center">
-      <!-- タイトル -->
-      <div class="footer-logo">
-        <span>ベイブレード交流掲示板</span>
+      <div class="d-flex align-items-center">
+        <button class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#footerNav" aria-controls="footerNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="fas fa-chevron-up"></span>
+        </button>
+        <!-- タイトル -->
+        <div class="footer-logo ms-1">
+          <span>ベイブレード交流掲示板</span>
+        </div>
       </div>
-
-      <button class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#footerNav" aria-controls="footerNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="fas fa-chevron-up"></span>
-      </button>
-
       <nav class="nav d-none d-md-flex">
         <%= link_to '利用規約', '/term', class: 'nav-link' %>
         <%= link_to 'プライバシーポリシー', '/privacy', class: 'nav-link' %>
