@@ -2,7 +2,8 @@
   "name": "app",
   "private": true,
   "devDependencies": {
-    "esbuild": "^0.23.1"
+    "esbuild": "^0.23.1",
+    "nodemon": "^3.1.4"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --external:admin-lte",
@@ -20,7 +21,6 @@
     "bootstrap-icons": "^1.11.3",
     "jquery": "^3.7.1",
     "jquery-ui": "^1.14.0",
-    "nodemon": "^3.1.4",
     "postcss": "^8.4.45",
     "postcss-cli": "^11.0.0",
     "sass": "^1.78.0",
@@ -30,4 +30,7 @@
   "browserslist": [
     "defaults"
   ]
+  "engines": {
+    "node": "16.x"
+  }
 }
