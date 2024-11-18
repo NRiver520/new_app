@@ -29,7 +29,7 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
   "engines": {
     "node": "16.x"
   }
