@@ -31,6 +31,7 @@ Rails.application.configure do
   config.assets.digest = true
   config.assets.debug = false
   config.assets.css_compressor = :sass
+  config.assets.precompile += %w(application.scss)
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
